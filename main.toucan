@@ -1,4 +1,1 @@
-void main()
-{
-    exit -2.6;
-}
+char c = 's';

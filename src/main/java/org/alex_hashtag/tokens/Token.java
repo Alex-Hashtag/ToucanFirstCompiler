@@ -34,13 +34,17 @@ public class Token
                 else return new Token(type);
 
         }
-        return new Token(TokenType.INVALID_STATE);
+        return new Token(TokenType.INVALID_STATE, pattern);
     }
 
     private static void populateSet()
     {
         Token.tokensWithValues.add(TokenType.INTEGER_LITERAL);
         Token.tokensWithValues.add(TokenType.FLOATING_POINT_LITERAL);
+        Token.tokensWithValues.add(TokenType.CHARACTER_LITERAL);
+        Token.tokensWithValues.add(TokenType.STRING_LITERAL);
+
+        Token.tokensWithValues.add(TokenType.IDENTIFIER);
     }
 
     public TokenType getType()

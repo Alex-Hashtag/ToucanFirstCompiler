@@ -3,6 +3,7 @@ package org.alex_hashtag;
 
 import org.alex_hashtag.tokens.Token;
 import org.alex_hashtag.tokens.TokenStream;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
@@ -51,8 +52,7 @@ public class Main
 
     }
 
-    @Nullable
-    private static Optional<String> registerFile(Scanner scanner)
+    private static @NotNull Optional<String> registerFile(Scanner scanner)
     {
         out.println("Please, say the name of a valid file you wish to compile: ");
 

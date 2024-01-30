@@ -50,6 +50,12 @@ public class TokenStream
         TokenStream.escapeCharacters.add('<');
         TokenStream.escapeCharacters.add('>');
         TokenStream.escapeCharacters.add(';');
+        TokenStream.escapeCharacters.add('=');
+        TokenStream.escapeCharacters.add('+');
+        TokenStream.escapeCharacters.add('-');
+        TokenStream.escapeCharacters.add('*');
+        TokenStream.escapeCharacters.add('/');
+        TokenStream.escapeCharacters.add('%');
     }
 
     public void printTokens()

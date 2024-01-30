@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85a4d82d-f8ab-4477-a0d4-937182e837ba" name="Changes" comment="Tokenizer is technically working" />
+    <list default="true" id="85a4d82d-f8ab-4477-a0d4-937182e837ba" name="Changes" comment="Tokenizer is technically working">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.toucan" beforeDir="false" afterPath="$PROJECT_DIR$/main.toucan" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/Token.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/Token.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenStream.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenType.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,9 +32,12 @@
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="5" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="oborac3j" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2bbDb7cwtx8oJSn7VZamUKLVuda" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -36,6 +47,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
@@ -93,7 +105,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenStream.java</url>
-          <line>58</line>
+          <line>64</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
