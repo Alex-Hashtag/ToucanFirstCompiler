@@ -1,26 +1,25 @@
 package org.alex_hashtag;
 
 
-import org.alex_hashtag.tokens.Token;
 import org.alex_hashtag.tokens.TokenStream;
+import org.alex_hashtag.tokens.TokenType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.InputMismatchException;
 import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-import static java.lang.System.*;
+import static java.lang.System.err;
+import static java.lang.System.out;
 
 
 public class Main
 {
     public static void main(String[] args) throws FileNotFoundException
     {
+        TokenType.populateHashSet();
         //Scanner scanner = new Scanner(in);
 
 

@@ -10,31 +10,34 @@ public class Token
     static HashSet<TokenType> tokensWithValues = new HashSet<>();
 
     TokenType type;
+    Position position;
     Optional<String> information = Optional.empty();
 
-    private Token(TokenType type, String information)
+    public Token(TokenType type, String information, int row, int column)
     {
         this.type = type;
+        this.position = new Position(row, column);
         this.information = information.describeConstable();
     }
 
-    private Token(TokenType type)
+    public Token(TokenType type, int row, int column)
     {
         this.type = type;
+        this.position = new Position(row, column);
     }
 
-    public static Token tokenFromPattern(String pattern)
+    public static Token tokenFromPattern(String pattern, int row, int column)
     {
         populateSet();
         for (TokenType type : TokenType.values())
         {
 
             if (Pattern.matches(type.getPattern(), pattern))
-                if (tokensWithValues.contains(type)) return new Token(type, pattern);
-                else return new Token(type);
+                if (tokensWithValues.contains(type)) return new Token(type, pattern, row, column);
+                else return new Token(type, row, column);
 
         }
-        return new Token(TokenType.INVALID_STATE, pattern);
+        return new Token(TokenType.INVALID_STATE, pattern, row, column);
     }
 
     private static void populateSet()
@@ -45,15 +48,5 @@ public class Token
         Token.tokensWithValues.add(TokenType.STRING_LITERAL);
 
         Token.tokensWithValues.add(TokenType.IDENTIFIER);
-    }
-
-    public TokenType getType()
-    {
-        return type;
-    }
-
-    public Optional<String> getInformation()
-    {
-        return information;
     }
 }
