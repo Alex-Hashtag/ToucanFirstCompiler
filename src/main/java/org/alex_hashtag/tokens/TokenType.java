@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 public enum TokenType
 {
-    MAIN("main"),
+    //MAIN("main"),
     SEMI_COLON(";"),
 
     BRACE_OPEN("\\("),
@@ -64,6 +64,7 @@ public enum TokenType
     EXIT("exit"),
     RETURN("return"),
 
+    MACRO("macro"),
 
     CLASS("class"),
     STRUCT("struct"),

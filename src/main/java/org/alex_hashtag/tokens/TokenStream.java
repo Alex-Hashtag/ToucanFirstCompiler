@@ -103,12 +103,21 @@ public class TokenStream
         int size = this.tokens.size();
         for (int i = 1; i < size; i++)
         {
+
             if (tokens.get(i).type.equals(TokenType.IDENTIFIER))
             {
                 if (tokens.get(i+1).type.equals(TokenType.BRACE_OPEN))
+                {
                     tokens.set(i, new Token(TokenType.FUNCTION_IDENTIFIER, tokens.get(i).information.get(), tokens.get(i).position.row(), tokens.get(i).position.column()));
+                    if (TokenType.types.contains(tokens.get(i - 1).type) && !tokens.get(i - 1).equals(TokenType.VAR))
+                        tokens.get(i).addType(tokens.get(i - 1).type);
+                }
                 else if (TokenType.types.contains(tokens.get(i-1).type))
+                {
                     tokens.set(i, new Token(TokenType.VARIABLE_IDENTIFIER, tokens.get(i).information.get(), tokens.get(i).position.row(), tokens.get(i).position.column()));
+                    if (!tokens.get(i - 1).equals(TokenType.VAR))
+                        tokens.get(i).addType(tokens.get(i - 1).type);
+                }
 
                 continue;
             }
@@ -146,11 +155,14 @@ public class TokenStream
     {
         for (Token token : this.tokens)
         {
-            System.out.println(token.position);
-            System.out.print("\tType: " + token.type);
+
+            System.out.print("Type: " + token.type);
             if (!token.information.isEmpty())
                 System.out.print(" Contains: " + token.information.get());
+            if(!token.variableType.isEmpty())
+                System.out.print(" Type: " + token.variableType.get());
             System.out.println();
+            System.out.println("\t" + token.position);
         }
     }
 }

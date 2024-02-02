@@ -1,6 +1,7 @@
 package org.alex_hashtag;
 
 
+import org.alex_hashtag.tokens.Token;
 import org.alex_hashtag.tokens.TokenStream;
 import org.alex_hashtag.tokens.TokenType;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,7 @@ public class Main
     public static void main(String[] args) throws FileNotFoundException
     {
         TokenType.populateHashSet();
+        Token.populateSet();
         //Scanner scanner = new Scanner(in);
 
 

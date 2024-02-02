@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85a4d82d-f8ab-4477-a0d4-937182e837ba" name="Changes" comment="Tokenizer is technically working">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/Position.java" afterDir="false" />
+    <list default="true" id="85a4d82d-f8ab-4477-a0d4-937182e837ba" name="Changes" comment="Tokens save their location now">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/parser/Grammar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.toucan" beforeDir="false" afterPath="$PROJECT_DIR$/main.toucan" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/Main.java" afterDir="false" />
@@ -23,8 +22,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Class" />
         <option value="Record" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -99,13 +98,22 @@
       <option name="project" value="LOCAL" />
       <updated>1706487244203</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Tokens save their location now">
+      <option name="closed" value="true" />
+      <created>1706734633226</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1706734633226</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Setup" />
     <MESSAGE value="Tokenizer is technically working" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tokenizer is technically working" />
+    <MESSAGE value="Tokens save their location now" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tokens save their location now" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

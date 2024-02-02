@@ -12,6 +12,7 @@ public class Token
     TokenType type;
     Position position;
     Optional<String> information = Optional.empty();
+    Optional<TokenType> variableType = Optional.empty();
 
     public Token(TokenType type, String information, int row, int column)
     {
@@ -28,7 +29,6 @@ public class Token
 
     public static Token tokenFromPattern(String pattern, int row, int column)
     {
-        populateSet();
         for (TokenType type : TokenType.values())
         {
 
@@ -40,7 +40,12 @@ public class Token
         return new Token(TokenType.INVALID_STATE, pattern, row, column);
     }
 
-    private static void populateSet()
+    public void addType(TokenType type)
+    {
+        this.variableType = Optional.ofNullable(type);
+    }
+
+    public static void populateSet()
     {
         Token.tokensWithValues.add(TokenType.INTEGER_LITERAL);
         Token.tokensWithValues.add(TokenType.FLOATING_POINT_LITERAL);
