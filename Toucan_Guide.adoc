@@ -569,7 +569,7 @@ void main()
 
 == Anonymous Functions
 
-Using lambda expressions( `-\>`), Toucan is able to create anonymous functions, which can be passed as arguments to other functions.
+Using lambda expressions( `\->`), Toucan is able to create anonymous functions, which can be passed as arguments to other functions.
 
 ----
 void main()
