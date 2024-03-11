@@ -136,11 +136,11 @@ _Toucan contains the following shorthands for basic operators:_
 
 _Toucan contains the following bitwise operators:_
 
-`&amp;` (bitwise and), `|`(bitwise or), `^` (bitwise exclusive or), `~` (bitwise complement), `&lt;&amp;lt;` (bitwise left shift), `&gt;&gt;` (bitwise right shift), `&gt;&gt;&gt;` (unsigned bitwise right shift)
+`&` (bitwise and), `|`(bitwise or), `^` (bitwise exclusive or), `~` (bitwise complement), `<<` (bitwise left shift), `>>` (bitwise right shift), `>>>` (unsigned bitwise right shift)
 
 _Toucan contains the following shorthands for bitwise operators:_
 
-`&amp;=` (bitwise and), `|=`(bitwise or), `^=` (bitwise exclusive or), `&lt;&amp;lt;=` (bitwise left shift), `&gt;&gt;=` (bitwise right shift), `&gt;&gt;&gt;=` (unsigned bitwise right shift)
+`&amp;=` (bitwise and), `|=`(bitwise or), `^=` (bitwise exclusive or), `<<=` (bitwise left shift), `>>=` (bitwise right shift), `>>>=` (unsigned bitwise right shift)
 
 `~~` (bitwise complement with self)
 
@@ -476,7 +476,7 @@ void main()
 
 _Functions have:_
 
-A return type at the beginning, which can be any primitive type (`int`, `byte`, `string`, etc.), any data structure (`tuple`, `packet`, etc.) or any object (more on that later). A function also has the ability to return multiple types with the `var` keyword syntax (`var&amp;lt;long, double&gt;`).
+A return type at the beginning, which can be any primitive type (`int`, `byte`, `string`, etc.), any data structure (`tuple`, `packet`, etc.) or any object (more on that later). A function also has the ability to return multiple types with the `var` keyword syntax (`var&amp;lt;long, double>`).
 
 Arguments, which are in the brackets, and are used as variables in the function.
 
@@ -569,7 +569,7 @@ void main()
 
 == Anonymous Functions
 
-Using lambda expressions( `-&gt;`), Toucan is able to create anonymous functions, which can be passed as arguments to other functions.
+Using lambda expressions( `->`), Toucan is able to create anonymous functions, which can be passed as arguments to other functions.
 
 ----
 void main()
@@ -1320,7 +1320,7 @@ There is also another method used in memory management called `dereference()`, w
 
 == Error Management
 
-Trying to do away with the Try-Catch-Finally structure and Exceptions that consistently make sure your program crashes unexpectedly, Toucan implements an Errors-as-Values system inspired mainly by Rust, which requires explicit error handling. This all happens with the `Result&amp;lt;T, T&gt;` Enum type which combined with the explicitly declared `error` enums allow for an Error Management system where the user is forced to deal with the possible errors.
+Trying to do away with the Try-Catch-Finally structure and Exceptions that consistently make sure your program crashes unexpectedly, Toucan implements an Errors-as-Values system inspired mainly by Rust, which requires explicit error handling. This all happens with the `Result&amp;lt;T, T>` Enum type which combined with the explicitly declared `error` enums allow for an Error Management system where the user is forced to deal with the possible errors.
 
 Errors in Toucan are not Exceptions like in languages like Java but instead a type of enums, which are declared with their own special keyword as to provide more efficient memory management and compiler error support.
 
@@ -1333,7 +1333,7 @@ error ArithmeticError
 }
 ----
 
-To incorporate errors into a function, you have to make it return a `Result&amp;lt;T, T&gt;` type.
+To incorporate errors into a function, you have to make it return a `Result&amp;lt;T, T>` type.
 
 ----
 Result<double, ArithmeticError> safeDivide(double a, double b)
@@ -1360,7 +1360,7 @@ void main()
 }
 ----
 
-However, thanks to anonymous methods, and the `catch()` method, which is built in with the Result&lt;T, U&gt; type. This method can either accept an anonymous function as an argument, or no arguments, where it will deal with the error in a default manner.
+However, thanks to anonymous methods, and the `catch()` method, which is built in with the Result<T, U>; type. This method can either accept an anonymous function as an argument, or no arguments, where it will deal with the error in a default manner.
 
 ----
 void main
@@ -1375,7 +1375,7 @@ void main
 
 == Dynamic Typing
 
-Dynamic typing is usually a really bad idea in programming languages, as it is usually a very performance-incentive mechanism. However, using it as a union type can actually bring some very useful functionality out of the language. Introducing the `var&amp;lt;T, T …&gt;` keyword.
+Dynamic typing is usually a really bad idea in programming languages, as it is usually a very performance-incentive mechanism. However, using it as a union type can actually bring some very useful functionality out of the language. Introducing the `var&amp;lt;T, T …>` keyword.
 
 ----
 void main()
@@ -1486,7 +1486,7 @@ void main()
 }
 ----
 
-As the value of x cannot actually be changed through the pointer, which, together with returning a Result&lt;&gt; type keeps pointers from creating errors during runtime. After pointers, there is the `slice` type.
+As the value of x cannot actually be changed through the pointer, which, together with returning a Result<> type keeps pointers from creating errors during runtime. After pointers, there is the `slice` type.
 
 ----
 void main()
@@ -1756,7 +1756,7 @@ switch (a)
 
 For explicit interactions with the operating system, Toucan provides a `syscall` keyword used for calling functions provided in the language that specifically interact with the operating system. The use of these calls is discouraged for anyone not writing libraries as they are very low level and could introduce bugs.
 
-Let’s for example take the `read&amp;lt;T&gt;()` function which implements the `read` system call.
+Let’s for example take the `read&amp;lt;T>()` function which implements the `read` system call.
 
 ----
 <T extends primitive> T read <>()
@@ -1898,7 +1898,7 @@ void main ()
 }
 ----
 
-Here is an example of the use of `typeof` for the `parse&lt;T&gt;()` method in the String class.
+Here is an example of the use of `typeof` for the `parse<T>()` method in the String class.
 
 ----
 static <T extends primitive> Result<T, TypeMismatchError> parse <>(&string buff)
@@ -1935,17 +1935,17 @@ This section of the document is used to document the design of Toucan’s writte
 
 Simple Steps:
 
-Linker -&gt; Register Maros -&gt; Tokenizer -&gt; Parser -&gt; Program Object -&gt; Unwrap Inheritance -&gt; Unwrap Generics -&gt; Unwrap Object types into Structures, Unions and Functions -&gt; Build Assembly
+Linker -> Register Maros -> Tokenizer -> Parser -> Program Object -> Unwrap Inheritance -> Unwrap Generics -> Unwrap Object types into Structures, Unions and Functions -> Build Assembly
 
 Errors Points:
 
-Linker -&gt; File not found error
+Linker -> File not found error
 
-Register Macros -&gt; 
+Register Macros -> 
 
-Parser -&gt; Expected/Got error
+Parser -> Expected/Got error
 
-Program Object -&gt; Type Mismatch, Arguments Mismatch, Type-Aware Expected/Got, Missing Dependency
+Program Object -> Type Mismatch, Arguments Mismatch, Type-Aware Expected/Got, Missing Dependency
 
 == Linker
 
