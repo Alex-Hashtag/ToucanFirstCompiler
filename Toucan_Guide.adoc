@@ -1,0 +1,1958 @@
+:doctype: book
+:icons: font
+:source-highlighter: pygments
+:toc: left
+
+
+
+
+= Toucan
+
+== The dual-memory-management programing language
+
+= The Fundamentals
+
+== Why was it created?
+
+Toucan is a programming language created with the purpose of bridging the gap between low-level and high-level languages. The main representatives to describe the differences would be C, a language created in 1972, trying to provide a human-readable syntax that other languages that were trying to abstract assembly before didn't have, and Java, a language created in 1995 with the purpose of trying to abstract away many low level controls C had at the sacrifice of performance. Toucan tries to provide the best of both worlds, the ability of low-level languages to control the way memory is stored, and the abstraction and ease of use high-level languages provide; a language that can be used for large performance intensive projects, or any number of small programs that aim to complete menial tasks.
+
+== Philosophy
+
+Toucan’s design philosophy is designed to adhere to four main principles, “Zero Cost Abstraction”, “Explicit Code”, “Memory Safety” and “User Control”. This means that the combination of features in Toucan will always make sure to keep code as readable as possible, while giving the user every possible option to deal with a problem, ranging from highly abstracted solutions, to ones that are able to use very performant code. 
+
+= Basic Features & Syntax
+
+== Hello World
+
+The first program written in any language is always the Hello World application, demonstrating the features of the language.
+
+----
+void main()
+{
+	println!("Hello World");
+}
+//the output of the function is: Hello World
+
+----
+
+Here the program starts with a `main()` function, which points to the compiler where the program should start, and then prints “Hello World” to the console. There is a more complete way to write this program.
+
+----
+public static class Main
+{
+	public void main(String[] args)
+	{
+		System.IOStream.println("Hello World");
+	}
+}
+//the output of the function is: Hello World
+----
+
+This is a more complete illustration of how the Toucan Hello World program works, as it does not hide any features. In Toucan, every file actually defines a class, which an object can usually be derived from, with methods, which could have parameters. All of that will be explained more in later sections of the document.
+
+== Variables
+
+In toucan variables are defined like variables in the C family of languages, Java, and Rust, with a few differences that improve both readability and ease of use.
+
+----
+void main()
+{
+	unsigned int i = 10;
+	double f = 12.3;
+	char b = 't';
+	final string str = "Hello World";
+} 
+----
+
+The initialisation of variables in Toucan happens when you combine the type of the variable with a name and a value. If a value isn’t specified, it automatically nulls (sets all bytes of the variable to `0`) the variable. There are integer, floating point, and some other primitive types in Toucan.
+
+_The integer types have a range from a single to 8 bytes they can take up:_
+
+`byte` or `int8` can be used to initialize a single byte integer.
+
+`short` or `int16` can be used to initialize a two byte integer.
+
+`int` or `int32` can be used to initialize a four byte integer.
+
+`long` or `int64` can be used to initialize an eight byte integer.
+
+The keyword `unsigned` can be put in front of the type to indicate that the variable doesn’t need to hold negative values, doubling its ability to hold positive ones. This can also be done by using the equivalent `uint` keyword when initializing (`uint8`, `uint16`, `uint32`, `uint64`).
+
+_The floating point types have a range from 4 to 8 bytes they can take up:_
+
+`float` or `float32` can be used to initialize a four byte floating point number.
+
+`double` or `float64` can be used to initialize an eight byte floating point number.
+
+_There are 4 more primitive types in Toucan that are built on top of the other primitive types:_
+
+`boolean` can be used to declare a variable that can hold either `true` or `false`.
+
+`char` can be used to declare a variable that can hold any of the 127 basic ASCII characters.
+
+`rune` can be used to declare a variable that can hold any UTF-8 chacacter. This, however, requires it to be stored as 4 bytes.
+
+`string` can be used to store a sequence of characters, and is basically a wrapper around an array of chars. When declaring a variable without initializing it, a max size for it must be set to ensure it can be stored on the stack, and to ensure buffer safety.
+
+_There are two more keywords in regards to making variables:_ 
+
+The keyword `final` makes variables unable to be changed later in the code.
+
+The keyword `var` can initialize a variable without specifying the type.
+
+`var` actually has another very important feature associate with Toucan, but its capability of type-safe dynamic typing
+
+----
+var<int, float> num;	
+----
+
+You can put any number of types in the diamond brackets, and the stack frame will always allocate space for the largest possible data type allowing for dynamic typing on the stack with proper compilation errors.
+
+== Arithmetics
+
+In Toucan all the most common arithmetic operations can be used.
+
+----
+void main()
+{
+	int a = (12+3*(10-4))/2;
+	int b = a << 2;
+	a *=2;
+	boolean c = (a == b);
+}
+----
+
+Like in other languages the `=` operator can be used to instruct a variable to take the value of another variable or equation.
+
+_Toucan contains the following basic operators:_
+
+`+` (addition), `-` (subtraction), `*`(multiplication), `/` (division), `%` (modulo)
+
+_Toucan contains the following shorthands for basic operators:_
+
+`+=` (addition), `-=` (subtraction), `*=` (multiplication), `/=` (division), `%=` (modulo)
+
+`++` (add 1), `--` (subtract 1)
+
+_Toucan contains the following bitwise operators:_
+
+`&amp;` (bitwise and), `|`(bitwise or), `^` (bitwise exclusive or), `~` (bitwise complement), `&lt;&amp;lt;` (bitwise left shift), `&gt;&gt;` (bitwise right shift), `&gt;&gt;&gt;` (unsigned bitwise right shift)
+
+_Toucan contains the following shorthands for bitwise operators:_
+
+`&amp;=` (bitwise and), `|=`(bitwise or), `^=` (bitwise exclusive or), `&lt;&amp;lt;=` (bitwise left shift), `&gt;&gt;=` (bitwise right shift), `&gt;&gt;&gt;=` (unsigned bitwise right shift)
+
+`~~` (bitwise complement with self)
+
+_Special cases on operator usage:_
+
+----
+void main()
+{
+	char c = 'b';
+	string str = c * 3; //str = "bbb"
+	str *= 3; //str ="bbbbbbbbb"
+	c += 1; //c = 'c'
+	str += c; //str = "bbbbbbbbbc"
+	str += 10; //str = "bbbbbbbbbc10"
+}
+----
+
+As shown in the example above, string and char have a special way they interact with the basic operators, they do however interact with bitwise operators the same way as any other variable, as they work only on the binary representation of a variable.
+
+== Formatted Print
+
+In Toucan, like in any other programming language, there must be a way to print the variables to the console. In Toucan, all those are in the System.IOStream package/class.
+
+----
+void main()
+{
+	int a = 10;
+	System.IOStream.print(a); //outputs 10;
+	System.IOStream.println(a); //outputs 10 and puts a new line;
+	System.IOStream.printf("%d", a); //outputs 10;
+	System.IOStream.printf("%d\n", a); //outputs 10 and puts a new line;
+	System.IOStream.printSTR("{a}"); //outputs 10 and puts a new line;
+}
+----
+
+The `print()` and `println()` are self-explanatory, `printf()` words basically identical as it works in C, and `printSTR()` is analogous to an improved `printf()`.
+
+== User Input
+
+The final basic feature Toucan has is the ability for the user to input data, which occurs thanks to multiple methods in the IOStream module, that also holds all the print methods.
+
+----
+void main()
+{
+	int i = System.IOStream.read<int>();
+	double d = System.IOStream.read<double>("Double: ");
+	int64 l = System.IOStream.read<long>("Long ");
+	string[64] str = System.IOStream.readLine("Text: ");
+	int num = System.IOStream.read<int32>("32 bits: ");
+	
+	System.IOStream.println("First: " + i)
+	System.IOStream.println("Second: " + d)
+	System.IOStream.println("Third: " + l)
+	System.IOStream.println("Forth: " + str)
+	System.IOStream.println("Fifth: " + num)
+}
+----
+
+After input has been submitted the console looks something like this:
+
+----
+20
+Double: 2.0
+Long 1203882003
+Text: texttext
+32 bits: 123456
+First: 20
+Second: 2.0
+Third: 1203882003
+Forth: texttext
+Fifth: 123456
+----
+
+The following functions are a part of the System.IOStream module:
+
+`read<T>()` can be used to read a single unit from the console of type T.
+
+`readBuffer(buffer, )` can be used to read a string of characters from the console up to the size defined from the `buffer` variable from the console.
+
+`readLine()` can read a string of characters from the console until enter is pressed.
+
+== Macros
+
+In Toucan, Macros are a way to keep code concise, as they are read by the compiler as larger pieces of code, usually package declaration. One example of a Macro is `println!()`, as it replaces `System.IOStream.println()`. All of them end in an exclamation mark.
+
+_Here are some common Macros:_
+
+All print functions in the System.IOStream package have a macro that follows the basic convention of _lastFunctionInPackage!_.
+
+_Ex:_ `printSTR!()` replaces `System.IOStream.printSTR()`.
+
+All read functions in the System.IOStream package have a macro that follows the basic convention of _lastFunctionInPackage!_.
+
+_Ex:_ `read!<>()` replaces `System.IOStream.read<>()`.
+
+= Basic Data Structures
+
+== Arrays
+
+Like in most programming languages, arrays are a sequence of characters, placed one after another in memory, which allows for many elements of a single type to be referred to together. All arrays are stored on the heap to prevent the possibility of a stack overflow.
+
+----
+void main()
+{
+	int array1[] = {10, 2, 39, 30, 3}; // Creates an array with 5 integer elements
+	string array2[] = {"Hello", " ",  "World"}; // Creates an array with 3 string elements
+	int32 array3[] = new int[5]; //Creates an array with 5 integer elements
+	array3[0] = 5; //The elements are initialized separately
+	array3[1] = 1;
+	array3[2] = 2;
+	array3[3] = 10;
+	array3[4] = 2;
+}
+----
+
+Arrays can hold any sort of an element, which will be placed in a line in memory. In fact, the basic `string` is defined in memory as an array of `char`.
+
+== Multidimensional Arrays
+
+In Toucan one can initialize arrays with more than one dimension.
+
+----
+void main()
+{
+	int array1[][] = { {1, 2, 3, 4, 5}, {11, 12, 13, 14, 15} }; // Initializing with variables
+	int array2[][] = new int[2][5]; // Initializing without values
+	int array3[][][] = {
+		{
+			{1, 2, 3},
+			{4, 5, 6}
+		},
+    		{
+        		{7, 8, 9},
+        		{10, 11, 12}
+		}
+	};// Initializing with variables
+	int array4[][][] = new int[2][2][3] // Initializing without values
+
+	array4[1][1][1] = 10; // Accessing an element
+}
+----
+
+== Tuples
+
+Tuples are one of Toucan’s flagship features, as they are a way to store data of the same type, and allow for ease of mathematical operations with it.
+
+----
+void main()
+{
+	tuple a = (10, 20, 10); // Creates a tuple of int
+	tuple b = (2.0, 2.5, 2.0); //Creates a tuple of double
+	a *= (1, 2, 3); // a = (10, 40, 30)
+	a *= 2; // a = (20, 80, 60)
+	a[0] = 40; // a = (40, 80, 60)
+	tuple<int, int> c; // declares a tuple c without initializing it
+	c = (5, 5); //initializes the tuple c with (5, 5) as values
+	println!(a); //prints (40, 80, 60)
+}
+----
+
+Tuples are stored in memory in the same way as arrays, as a block of memory saved in a sequence. Like arrays, they are stored on the heap to prevent stack overflows. An important note about tuples is that if they have a string as a member, mathematical operations won’t work on that member. It will however not give an error but just a warning. When declaring a tuple without initializing it, a diamond operator must be used so that the compiler can know the number of elements and type of elements in the tuple.
+
+== Imbedded Tuples
+
+Tuples have the capability of storing tuples, which can also be of different base types.
+
+----
+void main()
+{
+	tuple a = ( (10, 20), (20, 30) );
+	a *= (2, 3); // a = ( ( 20, 40), (60, 90) )
+	a-= 8; //a = ( (12, 32), (52, 82) )
+}
+----
+
+== Packets
+
+Packets are another Toucan data structure that give the language convenience in some aspects. It is an immutable stack allocated data type, that is used to temporarily store different types of variables until they are eventually unpacked, and stored in other variables for use.
+
+----
+void main()
+{
+	packet person = ["Alex", 19, 180];
+	string[64] name;
+	int age;
+	int height;
+	person.unpack(name, age, height); // Now the person variable doesn't exist, and all pointers or values in it are defined in the name, age and height variables
+}
+----
+
+This data structure gives the ability for compact storage and easy encapsulation to Toucan.
+
+== Structures
+
+Structures in Toucan are probably the most important feature, as basically everything is built off of either them or classes, which themselves are just more complex structures. Defined with the keyword `struct`, they are the most efficient way of combining together different types of data, storing all of it in a line, and being able to navigate it quickly.
+
+----
+struct Person
+{
+	string[64] name;
+	uint8 age;
+}
+
+void main()
+{
+	Person person1 = {"Alex", 20};	
+	println!("Name: " + person1.name + ", Age: " + person1.age); // prints "Name: Alex, Age: 20".
+	
+	Person person2;
+	person2.name = "Steve";
+	person2.age = 30;
+	println!("Name: " + person2.name + ", Age: " + person2.age); // prints "Name: Steve, Age: 30".
+}
+----
+
+Structs have a variety of capabilities in Toucan that aren’t incredibly common. First, which structs are value types, instances of them are still stored on the heap, as to prevent stack overflows. However, as they are value types, and are represented as a sequence of bits/bytes, bitwise operators work on these user-defined data types. One of the main reasons why they are efficient is that they don’t use pointers by default, outside of the reference to them on the stack. If they are used in an array, a tuple, or even in another struct, the elements are stored one next to the other.
+
+= Control Flow
+
+== If-Else Statement
+
+The if and else statements are common to most programming languages, giving the language the ability to complete different outcomes depending on the boolean expression in the braces.
+
+----
+void main()
+{
+	int number = read!<int>();
+
+	if (number > 0)
+	{
+    		prinln!("The number is positive.");
+	} 
+	else if (number < 0) 
+	{
+		println!("The number is negative.");
+	} 
+	else 
+	{
+		println!("The number is zero.");
+	}
+}
+----
+
+== Loops
+
+Loops are an important part of every programming language, including Toucan, as they allow for repeatability of code. The language has the most common loops, while, do-while, for, and for each (For iterating in a list).
+
+----
+void main()
+{
+	int i = 0;
+	while(i < 10)
+	{
+		println!("Hello World");
+		i++;
+	}
+
+	do
+	{
+		println!("Hello World");
+		i++;
+	}
+	while (i < 10);
+
+	for (i = 0;  i<10; i++)
+	{
+		println!("Hello World");
+	}
+
+	List list = new ArrayList({10, 20, 30, 40, 50, 60, 70, 80, 90, 100});
+
+	for (int num : list)
+	{
+		println!("Hello" + num);
+	}
+}
+----
+
+== Switch-Case
+
+The `switch-case` statement is a very simple way for programs to match different results to a variable, usually used to return a value based on a number.
+
+----
+void main()
+{
+	unsigned byte a = read!<uint8>();
+	switch (a)
+	{
+		case 1:
+			println!("Hello");
+			break;
+		case 2:
+			println!("World");
+			break;
+		default:
+			println!("Hello World");
+	}
+}
+----
+
+Together with the classic C-style `switch` statement, Toucan implements a more modern `switch-case` syntax that also implements pattern matching. 
+
+----
+void main()
+{
+	unsigned byte a = read!<uint8>();
+	switch (a)
+	{
+		case 1 -> println!("Hello");
+		case 2 -> println!("World");
+		default -> println!("Hello World");
+	}
+}
+----
+
+= Functions
+
+== Associated Functions
+
+Like every programming language, Toucan uses functions to give programmers the ability to reuse code blocks. They have a syntax similar to C++ and Java.
+
+----
+int sum (int a, int b)
+{
+	return a + b;
+}
+
+void main()
+{
+	println!(sum(5, 10));
+}
+----
+
+_Functions have:_
+
+A return type at the beginning, which can be any primitive type (`int`, `byte`, `string`, etc.), any data structure (`tuple`, `packet`, etc.) or any object (more on that later). A function also has the ability to return multiple types with the `var` keyword syntax (`var&amp;lt;long, double&gt;`).
+
+Arguments, which are in the brackets, and are used as variables in the function.
+
+_A function can also be made without a return type with the <code>void</code> keyword.</em>
+
+_When a function accepts a primitive type, it accepts a copy of the values in it. However, if it accepts a reference type like an Object (more on them later), it accepts a copy of the reference to that object._
+
+_When passing an object to a function, the <code>final</code> keyword can be used in the argument so that the function is not allowed to mutate the object. </em>
+
+== Function Overloading
+
+Like in Java, multiple functions with the same name can be declared, as long as they take in different parameters. Functions can also be made to get any number of parameters, which get implicitly cast as an array.
+
+----
+int sum (int a, int b)
+{
+	return a + b;
+}
+
+int sum (int a, int b, int c)
+{
+	return a + b + c;
+}
+
+double sum (double a, double b)
+{
+	return a + b;
+}
+
+float sum (float... a[])
+{
+	float sum = 0;
+	for (int i = 0; i < a.length; i++) sum+=a[i];
+	return sum;
+}
+
+void main()
+{
+	println!(sum( 5, 10));
+	println!(sum( 5, 10, 15));
+	println!(sum( 5.0, 10.0));
+}
+----
+
+== Recursion
+
+Naturally, Toucan functions also support recursion.
+
+----
+int factorial (int n)
+{
+	if (n == 1) return 1;
+	return n * factorial(n-1);
+}
+
+void main
+{
+	println!(factorial (10));
+}
+----
+
+== Generic Functions
+
+Sometimes we want a function to be able to be easily used with more than one type, and thus we define a generic function that unwraps at compile time for primitive types, and at runtime for reference types.
+
+----
+void printStuff<T>(T a, T b, T c)
+{
+	println!(a);
+	println!(b);
+	println!(c);
+}
+
+<T> T sum<>(T... list)
+{
+	T sum = 0;
+	for (T t : list) sum+=0;
+	return sum
+}
+
+void main()
+{
+	printstuff<int>(1, 2, 3);
+	printstuff<float>(1.1, 2.2, 3.3);
+	println!( sum<int>(1, 2, 3, 4) );
+	println!( sum<float>(1.1, 2.2, 3.3, 4.4, 5.5) );
+	println!( sum<string>("1", "2", "3", "4", "5", "6") );
+}
+----
+
+== Anonymous Functions
+
+Using lambda expressions( `-&gt;`), Toucan is able to create anonymous functions, which can be passed as arguments to other functions.
+
+----
+void main()
+{
+	List<String> names = Arrays.asList("John", "Jane", "Adam", "Eve", "Donna", "Adam", "Bob");
+	List<String> newNames = names.stream()
+		.filter(name -> name.length() > 3) // Filter: Only names longer than 3 characters
+		.map(String.toUpperCase()) // Map: Convert each name to uppercase
+		.sorted()   // Sorted: Arrange names alphabetically
+		.distinct() // Distinct: Remove duplicates
+		.limit(5)  // Limit: Choose only the first 5
+		.collect(Collectors.toList());  // Collect results back into a List
+	
+	println!(newNames);
+}
+----
+
+Anonymous functions however don’t necessarily need lambdas to do any work, as they can simply be defined using an inner scope. These functions can either return explicitly or implicitly.
+
+----
+void main()
+{
+	int a = {
+		int sum = 0.
+		for (int i = 1; i<101;i++) sum+=i;
+		return sum;
+		};
+
+	double b = {
+		double sum = 0.
+		for (int i = 1; i<101;i++) sum+=i;
+		sum
+		};
+
+} 
+----
+
+== Implementation Blocks
+
+A feature inspired by Rust, Toucan provides `implement` blocks that allow for the implementation of functions to structs, as methods (more on those later).
+
+----
+struct Person
+{
+	int birthYear;
+	string[64] name;
+	tuple<float, float, float> coordinates;
+}
+
+implement Person
+{
+	int getAge(this, int year)
+	{
+		return year - this.birthYear;
+	}
+
+	void printDetails(this)
+	{
+		println!("Hello, my name is " + this.name + ", and I have been born in " + this.birthYear + ".";
+		println!("I am positioned at" + this.coordinates;
+	}
+}
+
+void main()
+{
+	Person person = {2000, "Alex", (10.0, 70.0, 10.5);
+	
+	println!(person.getAge( 2024));
+	person.printDetails();
+}
+----
+
+You can also use implement blocks to implement a single function as a method for multiple structures.
+
+----
+struct Adult
+{
+	string[64] name;
+	int birthYear;
+	string[64] occupation;
+	double salary;
+}
+
+struct Child
+{
+	string[64] name;
+	int birthYear;
+	string[64] school;
+}
+
+implement void printDetails(this)
+{
+	printDetails(Adult)
+	{
+		println!("Hello, my name is " + this.name +", I was born in " + this.birthYear + " and work at " + this.occupation + " where I get a $" + this.salary + " salary.");
+	}
+
+	printDetails(Child)
+	{
+		println!("Hello, my name is " + this.name +", I was born in " + this.birthYear + " and go to school at " + this.school + ".");
+	}
+}
+
+void main()
+{
+	Adult adult = {"Alex", 1990, "Microsoft", 95000.0);
+	Child child = {"Alex", 2012, "Boston Elementary");
+
+	adult.printDetails();
+	child.printDetails();
+}
+----
+
+= Object-Oriented Programming
+
+== Structures as Objects
+
+The aforementioned structures are, in fact, Toucan’s most primitive object type. They allow for a simple declaration on the stack, and are freed from memory once they leave the scope they were declared in.
+
+Here it’s important to note that arrays are also treated as objects, and that if the keyword `final` is used when an Object reference is passed as an argument to a function, that function cannot mutate the object’s fields, and any methods that mutate the state of the object make in-scope copies of those fields to mutate instead.
+
+== Classes
+
+Classes in Toucan are most similar to Java’s, as they are a way for data to be easily grouped and encapsulated. By default, all files declare a single public class, and any number of internal private classes.
+
+----
+public class Person
+{
+	private string[64] name;
+	private int age;
+	private float height;
+	
+	public Person(string name, int age, float height)
+	{
+		this.name = name;
+		this.age = age;
+		this.height = height;
+	}
+
+	public void printDetails()
+	{
+		println!("Name: " + this.name);
+		println!("Age: " + this.age);
+		println!("Height: " + this.height);
+	}
+}
+----
+
+When a class is made, an object can be created from it.
+
+----
+void main()
+{
+	Person person = new Person("Alex", 20, 1.81);
+	person.printDetails();
+}
+----
+
+_Fields:_
+
+Class fields can hold any primitive type or object type. They can also include default declarations separate from the constructor.
+
+_Methods:_
+
+Class methods are basically functions that can be called relating to an object made from the class.
+
+_Constructors:_
+
+Every class has one or multiple constructors, that are like functions that create an instance of a class and set its fields. If not specified, a default public constructor will be given to the class.
+
+_Access Modifiers:_
+
+A `public` field, method or class can be accessed by any other file in the program.
+
+A `private` field or method can only be accessed by fields or methods in the same class. A `private` class can only be accessed by other classes in the same package.
+
+A `protected` field, method or class is accessible by any class in the same package, subclasses of the class, and classes that extend that class.
+
+_Other modifiers:_
+
+Using the `static` keyword on a class field or method means that the aforementioned field or method is a member of the class, and not a member of an object of that class.
+
+Using the `static` keyword on a class makes every field or method in it static. It also means that objects cannot be created from that class, and the compiler can actually implement the class as simply a collection of related constants or functions.
+
+Using the `final` keyword on a class means a class cannot be extended from.
+
+_Operator overloading:_
+
+Toucan classes support a feature known as operator overloading, which allows for classes to use arithmetic operators similarly to functions.
+
+----
+class ComplexNumber
+{
+	private double real;
+	private double imaginary;
+
+	public ComplexNumber (double real, double imaginary)
+	{
+		this.real = real;
+		this.imaginary = imaginary;
+	}
+
+	public operator+ (final ComplexNumber number)
+	{
+		return new ComplexNumber(this.real + number.real, this.imaginary + number.imaginary);
+	}
+}
+
+void main()
+{
+	ComplexNumber num1 = new ComplexNumber(5, 4);
+	ComplexNumber num2 = new ComplexNumber(2, 3);
+	num1 = num1 + num2; 
+}
+----
+
+== Inheritance
+
+A class can extend a single other class, giving it a lot of its functionality, in the same way that Java classes can, using the `extends` keyword. The `super` keyword is used to access fields of the extended class’ superclass
+
+----
+class Animal 
+{
+	public void makeSound(string[64] sound)
+	{
+		println!(sound);
+	}
+}
+
+class Dog extends Animal
+{
+	public void bark()
+	{
+		super.makeSound("A dog barked");
+	}
+}
+
+class Cat extends Animal
+{
+	public void meow()
+	{
+		super.makeSound("A cat meowed");
+	}
+}
+----
+
+When a class extends another class, it can override any methods of that previous class to make it its own. Additionally, the `abstract` keyword can be used to define classes that cannot be used to create objects and have to be extended from, and define methods that are required to be overridden by a class that extends the class.
+
+----
+abstract class Animal
+{
+	abstract void makeNoise();
+}
+
+class Dog extends Animal
+{
+	@Override
+	public void makeNoise()
+	{
+		println!("A dog barked");
+	}
+}
+
+----
+
+== Traits
+
+While a class can only extend a single other class, it can implement any number of traits, which are similar to interfaces in other languages, in the way they hold methods. However, unlike interfaces, they can have default method implementations.
+
+----
+public trait Animal
+{
+	void eat();
+	void sleep();
+}
+
+public trait Walkable
+{
+	void walk();
+}
+
+public Dog implements Animal, Walkable
+{
+	public void eat()
+	{
+		println!("The dog is eating");
+	}
+
+	public void sleep()
+	{
+		println!("The dog is sleeping");
+	}
+
+	public void walk()
+	{
+		println!("The dog is being walked");
+	}
+}
+----
+
+Traits can also be implemented to structures, by using implement blocks
+
+----
+struct Circle 
+{
+	float radius;
+}
+
+trait Drawable 
+{
+	void draw();
+}
+
+implement Drawable(Circle);
+{
+	void draw()
+	{
+		println!("Drawing circle with radius: " + this.radius);
+	}
+}
+----
+
+Records 
+
+Implemented through classes, records are basically storage for immutable data you can encapsulate with methods. The compiler automatically creates toString(), equals() and hashcode() methods, together with functions that are accessors for its fields. While records cannot extend or be extended from, they can implement traits, and custom functions can be declared in them.
+
+----
+public record Person(string[64] name, int age) {}
+
+void main()
+{
+	Person person = new Person ("Alex", 17);
+	println!(person.name()); // Accessor method
+}
+----
+
+== Enums
+
+Toucan Enums are somewhat of a mixture between Java and Rust’s enums. Initially, you can just declare them as a simple set of states.
+
+----
+public enum Color
+{
+	RED,
+	GREEN,
+	BLUE;
+}
+
+void main()
+{
+	Color color = RED;
+	
+	println!(color);
+}
+----
+
+Of course, a feature derived from Rust is the ability to define fields for the different states of an enum
+
+----
+public enum Color
+{
+	RED(RedShade shadeRed),
+	GREEN(GreenShade shadeGreen),
+	BLUE(BlueShade shadeBlue);
+}
+
+void main()
+{
+	Color color1 = RED(BLOOD_RED);
+	Color color2 = BLUE(INDIGO);
+	
+	
+	switch (color1)
+	{
+		case RED(RedShade shade) -> println!(shade);
+		case GREEN(RedShade shade) -> println!(shade);
+		case BLUE(RedShade shade) -> println!(shade);
+	}
+}
+----
+
+You can also define fields and methods for your enums that are valid for all states
+
+----
+public enum Color
+{
+	RED(RedShade shadeRed),
+	GREEN(GreenShade shadeGreen),
+	BLUE(BlueShade shadeBlue);
+	
+	public uint8 intensity;
+	
+	public uint8 getIntensity()
+	{
+		return this.intensity;
+	}
+	
+	public packet<byte color, var<shadeBlue,shadeGreen,shadeRed> shade> getShade()
+	{
+		return switch (this)
+		{
+			case RED(RedShade shade) -> [0, shade];
+			case GREEN(GreenShade shade) -> [1, shade];
+			case BLUE(BlueShade shade) -> [2, shade];
+		}
+	}
+	
+}
+
+void main()
+{
+	temporary Color color = RED(10, BLOOD_RED);
+	
+	byte baseColor;
+	var<shadeBlue,shadeGreen,shadeRed> shade;
+
+	color.getShade().unpack(color, shade);
+	
+	println!(color.getIntensity())
+	switch (baseColor)
+	{
+		case 0 -> println!(shade.as<shadeBlue>());
+		case 1 -> println!(shade.as<shadeGreen>());
+		case 2 -> println!(shade.as<shadeRed>());
+		default -> println!("No shade");
+	}
+}
+----
+
+Enums can have constructors, and they can have default values. If not, usually a default constructor with all values is generated, starting from the values every enum has, and then going to other values. If a default value is chosen, it’s skipped in the constructor. If an enum has only one set of values, then there may be only 1 constructor.
+
+----
+public enum Color
+{
+	RED("Red", RedShade shadeRed),
+	GREEN("Green", GreenShade shadeGreen),
+	BLUE("Blue", BlueShade shadeBlue); 
+	
+	private string[5] colorString;
+	private uint8 intensity;
+	
+	public RED(string[5] colorString, RedShade shadeRed)
+	{
+		this.colorString = colorString;
+		this.intensity = colorString.getIntensity();
+		this.shadeRed = shadeRed;
+	}
+	
+	//More constructors
+	
+	//Getters and Setters
+	
+}
+
+public enum Animal
+{
+	Dog("Dog", true),
+	Cat("Cat", true),
+	Cow("Cow", false);
+	
+	private string[3] name;
+	private boolean isPet;
+	public uint8 age;
+	
+	public Animal(string[3] name, boolean isPet, uint8 age)
+	{
+		this.name = name;
+		this.isPet = isPet;
+		this.age = age;
+	}
+}
+
+void main()
+{
+	Color color = RED(BLOOD_RED);
+	Animal animal = Dog(10);
+	
+	//do stuff
+}
+----
+
+----
+Finally, Toucan enums can implement traits.
+----
+
+----
+public enum Message implements Runnable
+{
+ 	QUIT,
+ 	MOVE(int x, int y),
+ 	WRITE(string[64]),
+ 	CHANGE_COLOR(int r, int g, int b);
+	
+	@Override
+	public void run()
+	{
+		switch (this)
+		{
+			case QUIT -> println!("The Quit variant has no data to print.");
+			case MOVE(x, y) -> println!("Move in the x direction "+ x + " and in the y direction " + y);
+			case WRITE(text) -> println!("Text message: " + text);
+			case CHANGE_COLOR(r, g, b) -> println!("Change the color to red "+ r +", green " + g + ", and blue " + b);
+		}
+    }
+
+}
+----
+
+== Compacted Objects
+
+Compacted Objects in Toucan are basically objects whose size is known at compile time. This means that when they are initialized as fields in a class, that the field holds the actual object instead of a reference to that object, and also that none of the methods are stored together with the object but instead separately, the same way they are stored when you implement a structure. Also, any object that extends a compacted object must also be compacted.
+
+We can see an example of the use of the compacted keyword here: 
+
+----
+public compacted class Person
+{
+	private string[64] name;
+	private int age;
+	private float height;
+	
+	public Person(string name, int age, float height)
+	{
+		this.name = name;
+		this.age = age;
+		this.height = height;
+	}
+
+	public void printDetails()
+	{
+		println!("Name: " + this.name);
+		println!("Age: " + this.age);
+		println!("Height: " + this.height);
+	}
+}
+----
+
+This code basically expands to the following, however with the addition of a constructor, the ability to use the `new` keyword, public and private fields and the ability to use it inside other files.
+
+----
+struct Person
+{
+	string[64] name;
+	int age;
+	float height;
+}
+
+implement Person
+{
+	void printDetails(this)
+	{
+		println!("Name: " + this.name);
+		println!("Age: " + this.age);
+		println!("Height: " + this.height);
+	}
+}
+----
+
+----
+The above syntax can also be used for records and enums. Also, this means that implement blocks can also be used for compacted objects.
+----
+
+----
+public compacted enum Message
+{
+ 	QUIT,
+ 	MOVE(int x, int y),
+ 	WRITE(string[64]),
+ 	CHANGE_COLOR(int r, int g, int b);
+}
+
+implement Runnable(Message)
+{
+	public void run()
+	{
+		switch (this)
+		{
+			case QUIT -> println!("The Quit variant has no data to print.");
+			case MOVE(x, y) -> println!("Move in the x direction "+ x + " and in the y direction " + y);
+			case WRITE(text) -> println!("Text message: " + text);
+			case CHANGE_COLOR(r, g, b) -> println!("Change the color to red "+ r +", green " + g + ", and blue " + b);
+		}
+    }
+}
+----
+
+== Generics
+
+In Toucan, classes, records, enums, structs, and traits can all use generics, just like functions. They work by the compiler generating concrete type versions of the data structures, for every instance of them being used in a project at compile time. 
+
+----
+class Box<T>
+{
+	private T item;
+
+	public void setItem(T item) 
+	{
+		this.item = item;
+	}
+
+	public T getItem()
+	{
+		return item;
+	}
+}
+
+trait Math<T extends (byte, short, int, long, float, double)>
+{
+	T sum(T... nums);
+	T sub(T... nums);
+	T mul(T... nums);
+	T div(T... nums);
+}
+
+class IntOperations implements Math<int>
+{
+	int sum(int... nums)
+	{
+		//code
+	}
+	//...
+}
+----
+
+== Memory Management
+
+We have reached the most important point of the guide, Toucan’s revolutionary memory management system, which involves a combination of reference counting, and escape patches for performance critical code.
+
+Every time a reference type variable is declared, the object that was created in the heap gets a counter next to it. Every time a variable is declared that points to that object, the counter increases, and every time such a variable goes out of scope or is redeclared with another object, the counter goes down, and if it reaches zero, the memory is freed, and all necessary checks for pointers in the object are done so as to not leave any object that was pointed to only by this object leak. For performance critical points of the application, there’s two keywords that allow for the memory to be treated differently.
+
+The `managed` keyword stops the runtime from reference counting at all, as it means the programmer is making a promise to the compiler they will free the memory manually with the `free()` method, which will also free any `managed` objects inside the freed object, and remove any of its references to other objects in memory, correctly indexing the reference count.
+
+----
+void main()
+{
+	managed ArrayList<int32> list = new ArrayList<>(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+	
+	for (int i : list)
+	{
+		println!(i);
+	}
+	
+	list.free();	
+}
+----
+
+The `free()` method, however, is not safe for using with objects that might have cyclic references inside them. For this , there is another `free()` method, which accepts either `true` or `false` as a parameter, and if it is `true`, then it will track all of the objects in goes through as it tries to free the memory at an object at the bottom of the tree the `free()` method builds (an object with no references inside it), and will call the `dereference()` method on any objects that it finds twice or more in the tree.
+
+----
+// Define a Node struct with a value and a list of neighbors
+struct Node 
+{
+    int value;
+    List<Node> neighbors;
+}
+
+// Define the Graph class with a list of nodes
+public class Graph 
+{
+    List<Node> nodes;
+
+    public Graph() 
+	{
+        this.nodes = new ArrayList<Node>();
+	}
+
+    // Method to create and add a new node to the graph
+    public Node addNode(int value) 
+	{
+        Node newNode = {value, new ArrayList<Node>()};
+        this.nodes.add(newNode);
+	}
+
+    // Method to add an edge between two nodes in the graph
+    public void addEdge(Node fromNode, Node toNode) 
+	{
+        fromNode.neighbors.add(toNode);
+	}
+
+    // Method to find a node in the graph by its value
+    public Node findNode(int value) 
+	{
+        for (Node node : this.nodes) 
+		{
+            if (node.value == value) 
+			{
+                return node;
+            	}
+        	}
+        return null;  // Return null if no node found
+	}
+}
+----
+
+----
+void main() 
+{
+    // Create a new Graph instance
+    managed Graph myGraph = new Graph();
+
+    // Add nodes to the graph
+    Node node1 = myGraph.addNode(1);
+    Node node2 = myGraph.addNode(2);
+    Node node3 = myGraph.addNode(3);
+
+    // Add edges to create a cycle: node1 -> node2 -> node3 -> node1
+    myGraph.addEdge(node1, node2);
+    myGraph.addEdge(node2, node3);
+    myGraph.addEdge(node3, node1);
+
+    // (Optional) Perform some operations with the graph
+    // For example, find a node and print its value and neighbors
+    Node foundNode = myGraph.findNode(2);
+    if (foundNode != null)
+	{
+	    println!("Found node with value: " + foundNode.value);
+	    print!("Neighbors: ");
+	    for (Node neighbor : foundNode.neighbors) 
+		{
+            	System.IOStream.print(neighbor.value + " ");
+		}
+		println!();  // New line for neatness
+	}
+
+	// At the end of the program, handle memory management for cyclic references
+    myGraph.free(true);
+}
+----
+
+Another escape patch from reference counting is the `temporary` keyword, as an object created with it is automatically deallocated when it or its variable leaves the original scope it was created in once (S0 that it can still be passed as a variable in other functions). 
+
+----
+List<int> func (List<int> a)
+{
+	temporary List b = List.clone();
+	
+	for (int i : b) i*=2;
+	for (int i : b) i+=1;
+	for (int i : b) i*=i;
+
+	return b.clone();
+}
+----
+
+There is also another method used in memory management called `dereference()`, which makes the variable no longer point to any object in memory.
+
+= *_Other Features_*
+
+== Error Management
+
+Trying to do away with the Try-Catch-Finally structure and Exceptions that consistently make sure your program crashes unexpectedly, Toucan implements an Errors-as-Values system inspired mainly by Rust, which requires explicit error handling. This all happens with the `Result&amp;lt;T, T&gt;` Enum type which combined with the explicitly declared `error` enums allow for an Error Management system where the user is forced to deal with the possible errors.
+
+Errors in Toucan are not Exceptions like in languages like Java but instead a type of enums, which are declared with their own special keyword as to provide more efficient memory management and compiler error support.
+
+----
+error ArithmeticError
+{
+	DivideByZeroError("Cannot divide by zero"),
+	OperationWithInfinityError("Cannot use infinity in arithmetic operations"),
+	NaNError("Arithmetic operations require a number");
+}
+----
+
+To incorporate errors into a function, you have to make it return a `Result&amp;lt;T, T&gt;` type.
+
+----
+Result<double, ArithmeticError> safeDivide(double a, double b)
+{
+	if (b == 0) return FAILURE(ArithmeticError.DivideByZeroError);
+	if (a == Double.INFINITY || b == Double.INFINITY) return FAILURE(ArithmeticError.OperationWithInfinityError);
+	if (a == Double.NaN || b == Double.NaN) return FAILURE(ArithmeticError.NaNError);
+	return SUCCESS(a/b);
+}
+----
+
+This means the programmer is forced to deal with it, usually thanks to a switch-case statement.
+
+----
+void main()
+{
+	switch (safeDivide(10, 3))
+	{
+		case FAILURE(ArithmeticError.DivideByZeroError) -> println!(ArithmeticError.DivideByZeroError.errorMessage);
+		case FAILURE(ArithmeticError.OperationWithInfinityError) -> println!(ArithmeticError.OperationWithInfinityError.errorMessage);
+		case FAILURE(ArithmeticError.NaNError) -> println!(ArithmeticError.NaNError.errorMessage);
+		case SUCCESS(a) -> println!("The result is " + a);
+	}
+}
+----
+
+However, thanks to anonymous methods, and the `catch()` method, which is built in with the Result&lt;T, U&gt; type. This method can either accept an anonymous function as an argument, or no arguments, where it will deal with the error in a default manner.
+
+----
+void main
+{
+	double res = safeDivide(10, 0).catch(); //The console prints the error message, res is set to 0.
+	res = safeDivide(10, 0).catch( () -> println!("An error occurred"); //The console prints "An error occurred", res is set to 0.
+	res = safeDivide(10, 0).catch( () -> println!("An error occurred", 10); //The console prints "An error occurred", res is set to 10.
+	res = safeDivide(10, 0).catch(10); //The console prints the error message, res is set to 10.
+	res = safeDivide(10, 2).catch(); // res becomes 5
+}
+----
+
+== Dynamic Typing
+
+Dynamic typing is usually a really bad idea in programming languages, as it is usually a very performance-incentive mechanism. However, using it as a union type can actually bring some very useful functionality out of the language. Introducing the `var&amp;lt;T, T …&gt;` keyword.
+
+----
+void main()
+{
+	var<long, double> a = 200000;
+	println!(a.as<int>());
+	println!(a.as<double>());
+}
+----
+
+When declaring a var using the diamond operator, any number of arguments can be passed, and thus the binary representation of the variable can be used as any number of primitive types. If the two types have a different size, the variable will be declared as just the largest element, and only the first bytes will be used for any smaller variable.
+
+== Wrapper Classes
+
+Another important Toucan feature taken directly from Java is wrapper classes, which wrap around any primitive type to give them extra functionality.
+
+_Wrapper Classes Include:_
+
+----
+Byte
+Short
+Integer
+Long
+Float
+Double
+Boolean
+Character
+String
+----
+
+The `String` class is actually a main reason these wrapper classes exist, as it’s the Object variant of the default `string` variable, allocated on the heap. 
+
+== Strings
+
+Toucan has multiple string types to keep code safe and efficient. 
+
+The first way to define a string is with an array of `char`, which just points to a sequence of characters in the heap like a regular array, but with a simpler syntax.
+
+----
+void main()
+{
+	char str[] = "Hello, World!";
+	
+	println!(str);
+}
+----
+
+The second is using the Stack-allocated `string` type, which is a wrapper around an array of `char` but is allocated on the stack. It has a maximum capacity defined at the time of declaration, and has a few methods defined using an `implement` block.
+
+----
+void main()
+{
+	string name1 = "Alex"; //Max size = 4
+	string[16] name2; //Max size = 16
+	string[16] name3 = "Zack"; //Max size = 16
+	
+	name2 = "Stark"; //Declare correctly
+	name3 = "0123456789ABCDEFG"; //Name is "0123456789ABCDEF"
+}
+----
+
+\
+\
+The third is the Heap-allocated `String` type, which is another wrapper around an array of `char`, is immutable, and has many methods declared on the class. When creating an object the usual way, it also checks if an object with the same contents is already in memory, and if it is, the new String points to the same object.
+
+----
+void main()
+{
+	String name1 = "Alex";
+	String name2 = "Alex"; //Points to name1
+	String name3 = new String("Alex"); //Points to a different object
+	
+	name1 = name1 + "a"; //Creates a new object in memory Alexa
+}
+----
+
+The fourth is the StringBuilder which allows for mutability, and a faster appending of data by pre-allocating memory where it can
+
+----
+void main()
+{
+	StringBuilder builder = new StringBuilder("Hello");
+	builder.append(", World!"); // Appends to the existing string
+	// Now 'builder' contains "Hello, World!"
+
+	builder.insert(6, "Toucan "); // Inserts at a specific position
+	// 'builder' now contains "Hello Toucan, World!"
+
+	builder.replace(6, 12, "Beautiful"); // Replaces part of the string
+	// 'builder' now contains "Hello Beautiful, World!"
+
+	String finalString = builder.toString(); // Converts to immutable String
+
+}
+----
+
+== Pointers
+
+In its pursuit to bring both low level control and high level abstractions, Toucan brings immutable pointers, slices and references. 
+
+----
+void main()
+{
+	int x = 10;
+	pointer<int> pointing = &x;
+	println!(pointing); //prints the address of x
+	println!(pointing.get().catch()); //prints x
+}
+----
+
+As the value of x cannot actually be changed through the pointer, which, together with returning a Result&lt;&gt; type keeps pointers from creating errors during runtime. After pointers, there is the `slice` type.
+
+----
+void main()
+{
+	char str[] = "Hello, World"; //defines a 13 character string using a char array (Thanks to null termination)
+	slice<char>[6] stringSlice = &str[7]; //creates a slice that can look from the 8th to the 13th character of str ("World\0"), aka a slice with a size of 6 looking at the 7th element of str
+	println!(stringSlice[0]); //prints the address of x[7]
+	println!(stringSlice[0].get().catch()); //prints x[7]
+	
+	for (char c : stringSlice)
+	{
+		print!(c.get().catch());
+	}
+	println!();
+	//prints the string
+}
+----
+
+Due to the fact that strings are UTF-8 encoded, there is however a separate time specifically for dealing with string slices
+
+----
+void main()
+{
+	string str = "Hello, World";
+	slicestr[6] stringSlice = &str[7];
+	println!(stringSlice.get().catch()); //prints "World"
+	println!(stringSlice); //prints the address where the string is stored
+	println!(stringSlice[0].get().catch()); //prints "H"
+}
+----
+
+The `slice` is another immutable type, which is basically a wrapper around an array of pointers that hold consecutive elements. Finally, it’s important to talk about the use of references in functions.
+
+----
+void square (&int x)
+{
+	x*=x;
+}
+
+void main()
+{
+	int x = read!<int>();
+	
+	square(x);
+	
+	println!(x);
+}
+----
+
+Using a reference to a primitive type in a function is an important feature because it is a mutable reference. It means that it affects the passed argument directly.
+
+== Lambdas (Function Pointers)
+
+Function pointers are extremely similar to pointers, however, instead of a pointer to a variable, they store a pointer to a function. These variables can be used to call the function.
+
+----
+void main()
+{
+	lambda<int, int, int> any = ::sum;
+	println!(any(1, 2));
+	any = ::mult;
+	println!(any(2, 3));
+}
+
+int sum (int a, int b)
+{
+	return a + b;
+}
+
+int mult (int a, int b)
+{
+	return a * b;
+}
+----
+
+== Macros (Meta Programming)
+
+Macros in Toucan are a feature inspired by its cousin, Rust, which while less powerful are a lot more straightforward. A Toucan macro is basically a function that is executed at compile time that returns a string, with which it is replaced by before the code compiles. This process is called expending a macro.
+
+Here is the code for one variant of the `println!` macro:
+
+----
+macro println!(String args)
+{
+	return "IOStream.println(" + args + ")";
+}
+----
+
+Macros can accept in their arguments a few more types of arguments than a regular function can, the first of which is an identifier. These extra arguments are designed for the convenience of being able to type check macros at the top level.
+
+----
+macro foo($identifier ident, $body<Runnable> func)
+{
+	return "void" + ident + "() {" + func +"}";
+}
+----
+
+The macro specific arguments are designated with a ‘$’ in front of them, and while they can technically be replaced with normal strings, in practice they make code more readable. Let’s see how the ‘foo’ macro would be used if it accepted regular strings as arguments.
+
+----
+foo!("printNums", "for (int i = 0; i<=20;i++){println!(i)}");
+----
+
+In the meantime, this is its use case with macro arguments: 
+
+----
+foo!(printNums, () -> {
+	for (int i = 0; i <=20; i++)
+	{
+		println!(i);
+	}
+});
+----
+
+While in practice both expand to the same code, the second version is a lot more readable since it benefits from type checking inside the arguments. In the end, the macro expand into the following code (without the indentation since the compiler generally doesn’t care):
+
+----
+void printNums()
+{
+	for (int i = 0; i <=20; i++)
+	{
+		println!(i);
+	}
+}
+----
+
+Macros are also generic, meaning they can accept types as arguments.
+
+----
+macro read<T extends primitive>(String message)
+{
+	return "IOStream.read<" + T + ">(" + message + ")";
+}
+----
+
+Macros also accept the `$override` type, which is used to override the properties of how the macro is defined. It is a constant, meaning it is declared at the time of initiating the macro.
+
+The first thing the override type can change is the brackets used for defining the macro, by using its `brackets` field, which includes a tuple of chars of two elements. We will show this through the `vec!` macro. This is also to showcase the ability of generics to handle implicit typing.
+
+----
+macro vec!<?T>($override.brackets = ('[',']'), T... members[] )
+{
+	StringBuilder codeblock = new StringBuilder("{");
+	codeblock.append("ArrayList<" + T + "> temp = new ArrayList<>();");
+	for(T member : members)
+	{
+		codeblock.append("temp.add(" + member + ");");
+	}
+	codeblock.append("return temp; }");
+
+	return codeblock.toString();
+}
+
+void main()
+{
+	ArrayList<int> list = vec![1, 2, 3, 4, 5];
+}
+----
+
+This line expands to the following:
+
+----
+ArrayList<int> list = {
+
+	Arraylist<int> temp = new ArrayList<>();
+	temp.add(1);
+	temp.add(2);
+	temp.add(3);
+	temp.add(4);
+	temp.add(5);
+	return temp;
+};
+----
+
+The next field on the `$override` type is the `separator` field. This block will also showcase the `$variable` type.
+
+----
+macro matchWith<?T extends primitive> ($override.separator = '|', $variable<T> match, T... args[])
+{
+	StringBuilder  codeblock = new StringBuilder("switch(" + match + ") {");
+	for (int i = 0; i<0 args.size; i++)
+	{
+		codeblock.append("case " + args[i] + " -> println!(" + arg[i] + "*" + i + ");");
+	}
+	codeblock.append("default -> println!(\"No\"); }");
+
+	return codeblock.toString();
+}
+
+void main()
+{
+	int a = 10;
+	
+	matchWith!(a | 1 | 12 | 10 | 2);
+}
+----
+
+The match statement for this block expands to:
+
+----
+switch (a)
+{
+	case 1 -> println!( a * 1);
+	case 12 -> println!( a * 2);
+	case 10 -> println!( a * 3);
+	case 2 -> println!( a * 4);
+	default -> println!("No");
+}
+----
+
+The final variable a macro can accept is the `$pattern` variable. It is probably the most powerful type you can insert into a macro, as it allows for completely custom syntax. We will showcase that through the implementation of a match macro, similar to the match statement in Rust.
+
+----
+macro match!<?T>($override.brackets = (' ', ' '), $variable<T> matchSwitch)
+	
+	(
+		$override.brackets = ('{', '}'),
+ 		$override.separator = ';',
+ 		$pattern
+		(
+			T matchTo, 
+			"=>",  
+			$body<Runnable> bodyOfCase
+		)... args[]
+	)
+{
+	StringBuilder codeblock = new StringBuilder("switch(" + matchSwitch + ") {");
+	for (int i = 0; i< args.size; i++)
+	{
+		codeblock.append("case " +args[i].matchTo + " -> " + args[i].bodyOfCase + ";");
+	}
+	codeblock.append("}");
+
+	return codeblock.toString();
+}
+
+void main()
+{
+	int a = 5;
+	match! a
+	{
+		1 => println!(12);
+		2 => println!(11);
+		3 => println!(23);
+		4 => println!(13);
+		5 => println!(9);
+		_ => println!("None");
+	}
+}
+----
+
+This code block also showcases the capability of macros to accept multiple sets of brackets as arguments and expands to a regular switch statement:
+
+----
+switch (a)
+{
+	case 1 -> println!(12);
+	case 2 -> println!(11);
+	case 3 -> println!(23);
+	case 4 -> println!(13);
+	case 5 -> println!(9);
+	case _ -> println!("None");
+}
+----
+
+== System Calls
+
+For explicit interactions with the operating system, Toucan provides a `syscall` keyword used for calling functions provided in the language that specifically interact with the operating system. The use of these calls is discouraged for anyone not writing libraries as they are very low level and could introduce bugs.
+
+Let’s for example take the `read&amp;lt;T&gt;()` function which implements the `read` system call.
+
+----
+<T extends primitive> T read <>()
+{
+	string[STANDARD_BUFFER] buff = syscall read(STANDARD_BUFFER);
+	
+	switch (String.parse<T>(buff))
+	{
+		case SUCCESS(res) -> return res;
+		case FAILURE(err) -> return T.default();
+	}
+}
+----
+
+This function gets a string from the `read` system call and parses it to its return type.
+
+Such system calls are also used in the `File` class so that it can function. Here is for example the file constructor.
+
+----
+public File(String filepath)
+{
+	this.fileDesc = syscall open(filepath, READ_WRITE);
+}
+----
+
+There are many more system calls available in Toucan, however their main use-case is to distinguish from functions built into the compiler, and functions built in the language itself. These should only be used for libraries and to increase explicitness of very low level code.
+
+== Const
+
+The `const` keyword in Toucan is similar to the `final` keyword, however it carries a few restrictions and optimizations. The two keywords are different because const implies compile time storage or execution. 
+
+A variable declared with `const` is always stored in static memory. This means that consts can’t be declared in functions, but only in classes or in an unscoped file. This is because the dynamic memory allocation in functions happens only on the stack and heap and not to static memory. Here we’ll have the Constants class of the math package.
+
+----
+public static class Constants
+{
+	const double PI = 3.14159265358979311599796346854;
+	const double E = 2.718281828459045;
+}  
+----
+
+Besides const variables exist const functions, which are basically pure functions. Such functions are executed at compile time and inlined whenever possible. The only functions that can be used in const functions are other const functions. This is because there are many things not allowed in const functions: \
+
+* Direct mutability of function arguments
+* Loops with an unknown number of iterations
+* Any side effect, including mainly input and output
+* Heap memory allocation (All objects must be declared as `temporary`)
+* Threads
+* Any code that can only be executed at runtime
+
+Here are a few examples of const functions from the Arithmetics class in the math package
+
+----
+public static class Arithmetics
+{
+	const int pow (int a)
+	{
+		return a * a;
+	}
+
+	const double pow (double a)
+	{
+		return a * a;
+	}
+
+ 	const float quickInverseSquareRoot (float a)
+	{
+		var<int, float> i = a;
+		float x2 = 0.5F * a;
+		i = 0x5f3759df - (i.as<long>() >> 1)
+		float y = i.as<float>();
+	
+		return y * (1.5F - x2 * y * y);
+	}
+}
+----
+
+Lastly, the `const` keyword can be used with any class, however all that means is that every member and method of the class is labeled as `const`.
+
+----
+public const class Constants
+{
+	double PI = 3.14159265358979311599796346854;
+	double E = 2.718281828459045;
+}  
+----
+
+== Concurrency
+
+Concurrency in Toucan is above-all inspired from the simple multithreading model of languages like C or Java.
+
+----
+public static class Main
+{
+	public void main ()
+	{
+		lambda<void> func = Main::printNum;
+	
+		Thread thrd1 = new Thread (func);
+		Thread thrd2 = new Thread (func);
+ 
+		thrd1.start();
+		thrd2.start();
+
+		thrd1.join();
+		thrd2.join();
+	} 
+
+	void printNum ()
+	{
+		for (int i = 0; i<10; i++)
+		    println!(i);
+	}
+}
+----
+
+== Typeof and Sizeof
+
+Toucan has 2 operators, `typeof` and `sizeof`, which are designed to be used for the determination of the type or size (in bytes) of a variable or a type during compile time. this, in turn, allows for many optimizations for performence critical code. They would mainly be used in conjunction with Toucan's already extensive Generics system to be able to infer information in a type-safe way.
+
+Here is an example of the use of `sizeof` for C style allocations.
+
+----
+import toucan.unsafe.CAllocations
+
+stuct Person
+{
+    String name;
+    int age;
+    double height;
+}
+
+void main ()
+{
+    pointer<Person> p = CAllocations.malloc(sizeof Person);
+    p.get().catch().name = "Steve";
+    p.get().catch().age = 19;
+    p.get().catch().height = 1.76;
+}
+----
+
+Here is an example of the use of `typeof` for the `parse&lt;T&gt;()` method in the String class.
+
+----
+static <T extends primitive> Result<T, TypeMismatchError> parse <>(&string buff)
+{
+    switch (typeof T)
+    {
+        case int8 -> {
+            if (buff.length() > 3)
+                return TypeMismatchError("Expected " + typeof T);
+            
+            if (buff[0] > '2')
+                return TypeMismatchError("Expected " + typeof T);
+            else if (buff[0] == '2')
+                if (buff[1] > '6')
+                    return TypeMismatchError("Expected " + typeof T);
+                else if (buff[1] == '6')
+                    if (buff[2] > '5')
+                        return TypeMismatchError("Expected " + typeof T);
+                        
+            // Actual parsing logic
+        }
+        // Rest of cases
+    }
+}
+----
+
+= The Toucan Compiler
+
+== Introduction
+
+This section of the document is used to document the design of Toucan’s written in Java compiler for the convenience of keeping everything consistent. Here will be documented every function, shortcut or innovation made to have the Toucan Compiler work.
+
+== Steps (Simplified)
+
+Simple Steps:
+
+Linker -&gt; Register Maros -&gt; Tokenizer -&gt; Parser -&gt; Program Object -&gt; Unwrap Inheritance -&gt; Unwrap Generics -&gt; Unwrap Object types into Structures, Unions and Functions -&gt; Build Assembly
+
+Errors Points:
+
+Linker -&gt; File not found error
+
+Register Macros -&gt; 
+
+Parser -&gt; Expected/Got error
+
+Program Object -&gt; Type Mismatch, Arguments Mismatch, Type-Aware Expected/Got, Missing Dependency
+
+== Linker
+
+First the compiler looks at the top of the file for any imports/dependencies of the program. Then it looks at the program file structure and any libraries that are downloaded externally from it, and puts them on a stack. Then it looks at any dependencies of the file on top of the stack and puts the dependency files on the stack. When it finally finds a file that has no dependencies, it puts it in a file queue of unique files to be tokenized later.
+
+After the whole process is done, the compiler has access to a queue that is a list of all files that need to be in the final program. Those files will be tokenized and parsed individually, and then all added in a single Program Object.
+
+The only error that the Linker can throw is a “File not found” Error,
+
+== Register Macros

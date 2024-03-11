@@ -28,7 +28,12 @@ public class TokenStream
 
                 if (lastTokenString.isEmpty())
                 {
-                    if (c != ' ' && c != '\n' && c != '\t') lastTokenString.append(c);
+                    if (c != ' ' && c != '\n' && c != '\t')
+                    {
+                        lastTokenString.append(c);
+                        this.tokens.addLast(Token.tokenFromPattern(lastTokenString.toString(), row, column - lastTokenString.length()));
+                        lastTokenString.setLength(0);
+                    }
                     else if (c == '\t') column+=3;
                     else if (c == '\n')
                     {
@@ -71,6 +76,9 @@ public class TokenStream
             lastTokenString.append(c);
             column++;
         }
+
+        this.tokens.addFirst(new Token(TokenType.START, 0, 0));
+        this.tokens.addLast(new Token(TokenType.END, 0, 0));
         simplify();
     }
 
@@ -96,28 +104,44 @@ public class TokenStream
         TokenStream.escapeCharacters.add('%');
         TokenStream.escapeCharacters.add('.');
         TokenStream.escapeCharacters.add(',');
+        TokenStream.escapeCharacters.add('&');
+        TokenStream.escapeCharacters.add('|');
+        TokenStream.escapeCharacters.add('^');
     }
 
     private void simplify()
     {
-        int size = this.tokens.size();
-        for (int i = 1; i < size; i++)
+        int size = this.tokens.size() - 1;
+        for (int i = 1; i < size; i++) //Type Cast
         {
 
-            if (tokens.get(i).type.equals(TokenType.IDENTIFIER))
+            if (tokens.get(i).type.equals(TokenType.BRACE_OPEN) && TokenType.types.contains(tokens.get(i+1).type) && tokens.get(i+2).type.equals(TokenType.BRACE_CLOSED))
+            {
+                tokens.set(i, new Token(TokenType.TYPE_CAST, tokens.get(1).position.row(), tokens.get(1).position.column()));
+                tokens.get(i).addType(tokens.get(i+1).type);
+                tokens.remove(i+1);
+                tokens.remove(i+1);
+                size-=2;
+
+                continue;
+            }
+
+            if (tokens.get(i).type.equals(TokenType.IDENTIFIER)) // Identifiers
             {
                 if (tokens.get(i+1).type.equals(TokenType.BRACE_OPEN))
                 {
                     tokens.set(i, new Token(TokenType.FUNCTION_IDENTIFIER, tokens.get(i).information.get(), tokens.get(i).position.row(), tokens.get(i).position.column()));
-                    if (TokenType.types.contains(tokens.get(i - 1).type) && !tokens.get(i - 1).equals(TokenType.VAR))
+                    if (TokenType.types.contains(tokens.get(i - 1).type) && !tokens.get(i - 1).type.equals(TokenType.VAR))
                         tokens.get(i).addType(tokens.get(i - 1).type);
                 }
                 else if (TokenType.types.contains(tokens.get(i-1).type))
                 {
                     tokens.set(i, new Token(TokenType.VARIABLE_IDENTIFIER, tokens.get(i).information.get(), tokens.get(i).position.row(), tokens.get(i).position.column()));
-                    if (!tokens.get(i - 1).equals(TokenType.VAR))
+                    if (!tokens.get(i - 1).type.equals(TokenType.VAR))
                         tokens.get(i).addType(tokens.get(i - 1).type);
                 }
+                else if (tokens.get(i+1).type.equals(TokenType.IDENTIFIER))
+                    tokens.set(i, new Token(TokenType.TYPE_IDENTIFIER, tokens.get(i).information.get(), tokens.get(i).position.row(), tokens.get(i).position.column()));
 
                 continue;
             }

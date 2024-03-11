@@ -17,6 +17,14 @@ public enum TokenType
     DIAMOND_OPEN("\\<"),
     DIAMOND_CLOSED("\\>"),
 
+    INTEGER_LITERAL("^([+-]?[1-9]\\d*|0)$"),
+    FLOATING_POINT_LITERAL("^([+-]?([1-9]\\d*|0)(\\.\\d+)?|\\.\\d+)$"),
+    TRUE("true"),
+    FALSE("false"),
+    CHARACTER_LITERAL("^'[\\x20-\\x7E]'$"),
+    RUNE_LITERAL("^'.'|'\\\\u[0-9a-fA-F]{4}'|'\\\\.'$"),
+    STRING_LITERAL("^\"[\\s\\S]*\"$"),
+
     EQUALS("="),
     PLUS("\\+"),
     MINUS("\\-"),
@@ -25,6 +33,15 @@ public enum TokenType
     MODULUS("\\%"),
     COMMA("\\,"),
     DOT("\\."),
+    AND("\\&"),
+    OR("\\|"),
+    XOR("\\^"),
+    LEFT_SHIT("<<"),
+    RIGHT_SHIFT(">>"),
+    UNSIGNED_RIGHT_SHIFT(">>>"),
+    LOGICAL_AND("\\&\\&|and"),
+    LOGICAL_OR("\\|\\||or"),
+    LOGICAL_EQUALS("=="),
     ARROW("->"),
 
     VOID("void"),
@@ -40,20 +57,24 @@ public enum TokenType
     UINT64("uint64"),
     FLOAT32("float32|float"),
     FLOAT64("float64|double"),
+    BOOLEAN("boolean"),
     CHARACTER("char"),
+    RUNE("rune"),
     STRING("string"),
-    ARRAY("array"),
     TUPLE("tuple"),
     PACKET("packet"),
     POINTER("pointer"),
     SLICE("slice"),
     LAMBDA("lambda"),
 
+    TYPEOF("typeof"),
+    SIZEOF("sizeof"),
 
     IF("if"),
     ELSE("else"),
 
     LOOP("loop"),
+    DO("do"),
     WHILE("while"),
     FOR("for"),
 
@@ -72,33 +93,35 @@ public enum TokenType
     RECORD("record"),
     TRAIT("trait"),
 
+    @Deprecated
     COMPACTED("compacted"),
     PUBLIC("public"),
     PRIVATE("private"),
     PROTECTED("protected"),
     STATIC("static"),
+    FINAL("final"),
+    CONST("const"),
 
     IMPLEMENT("implement"),
     IMPLEMENTS("implements"),
     EXTENDS("extends"),
 
 
+    SYSCALL("syscall"),
     MANAGED("managed"),
     TEMPORARY("temporary"),
 
     ERROR("error"),
 
-    INTEGER_LITERAL("^([+-]?[1-9]\\d*|0)$"),
-    FLOATING_POINT_LITERAL("^([+-]?([1-9]\\d*|0)(\\.\\d+)?|\\.\\d+)$"),
-    CHARACTER_LITERAL("^'.'$"),
-    STRING_LITERAL("^\"[\\s\\S]*\"$"),
-
     IDENTIFIER("^[a-zA-Z_][a-zA-Z0-9_]*$"),
     TYPE_IDENTIFIER("^[a-zA-Z_][a-zA-Z0-9_]*$"),
     VARIABLE_IDENTIFIER("^[a-zA-Z_][a-zA-Z0-9_]*$"),
     FUNCTION_IDENTIFIER("^[a-zA-Z_][a-zA-Z0-9_]*$"),
+    TYPE_CAST("^[a-zA-Z_][a-zA-Z0-9_]*$"),
 
-    INVALID_STATE("-----------");
+    INVALID_STATE("-----------"),
+    START("-----------"),
+    END("-----------");
 
     static HashSet<TokenType> types = null;
 
@@ -126,8 +149,8 @@ public enum TokenType
         types.add(TokenType.FLOAT32);
         types.add(TokenType.FLOAT64);
         types.add(TokenType.CHARACTER);
+        types.add(TokenType.RUNE);
         types.add(TokenType.STRING);
-        types.add(TokenType.ARRAY);
         types.add(TokenType.TUPLE);
         types.add(TokenType.PACKET);
         types.add(TokenType.POINTER);
