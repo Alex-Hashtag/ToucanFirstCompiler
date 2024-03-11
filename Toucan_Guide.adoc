@@ -140,7 +140,7 @@ _Toucan contains the following bitwise operators:_
 
 _Toucan contains the following shorthands for bitwise operators:_
 
-`&amp;=` (bitwise and), `|=`(bitwise or), `^=` (bitwise exclusive or), `<<=` (bitwise left shift), `>>=` (bitwise right shift), `>>>=` (unsigned bitwise right shift)
+`&amp;=` (bitwise and), `|=`(bitwise or), `^=` (bitwise exclusive or), `<\<=` (bitwise left shift), `>>=` (bitwise right shift), `>>>=` (unsigned bitwise right shift)
 
 `~~` (bitwise complement with self)
 
@@ -569,7 +569,7 @@ void main()
 
 == Anonymous Functions
 
-Using lambda expressions( `->`), Toucan is able to create anonymous functions, which can be passed as arguments to other functions.
+Using lambda expressions( `-\>`), Toucan is able to create anonymous functions, which can be passed as arguments to other functions.
 
 ----
 void main()
