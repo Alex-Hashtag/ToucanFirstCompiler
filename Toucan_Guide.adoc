@@ -84,17 +84,19 @@ _The floating point types have a range from 4 to 8 bytes they can take up:_
 
 `double` or `float64` can be used to initialize an eight byte floating point number.
 
-_There are 4 more primitive types in Toucan that are built on top of the other primitive types:_
+_There are 5 more primitive types in Toucan that are built on top of the other primitive types:_
 
 `boolean` can be used to declare a variable that can hold either `true` or `false`.
 
+`usize` is used to store any value representing a size, for example, the size of an array. It will usually be equivalent to uint64.
+
 `char` can be used to declare a variable that can hold any of the 127 basic ASCII characters.
 
-`rune` can be used to declare a variable that can hold any UTF-8 chacacter. This, however, requires it to be stored as 4 bytes.
+`rune` can be used to declare a variable that can hold any UTF-8 character. This, however, requires it to be stored as 4 bytes.
 
 `string` can be used to store a sequence of characters, and is basically a wrapper around an array of chars. When declaring a variable without initializing it, a max size for it must be set to ensure it can be stored on the stack, and to ensure buffer safety.
 
-_There are two more keywords in regards to making variables:_ 
+_There are two more keywords in regard to making variables:_
 
 The keyword `final` makes variables unable to be changed later in the code.
 
@@ -476,7 +478,7 @@ void main()
 
 _Functions have:_
 
-A return type at the beginning, which can be any primitive type (`int`, `byte`, `string`, etc.), any data structure (`tuple`, `packet`, etc.) or any object (more on that later). A function also has the ability to return multiple types with the `var` keyword syntax (`var&amp;lt;long, double>`).
+A return type at the beginning, which can be any primitive type (`int`, `byte`, `string`, etc.), any data structure (`tuple`, `packet`, etc.) or any object (more on that later). A function also has the ability to return multiple types with the `var` keyword syntax (`var<long, double>`).
 
 Arguments, which are in the brackets, and are used as variables in the function.
 
@@ -1320,7 +1322,7 @@ There is also another method used in memory management called `dereference()`, w
 
 == Error Management
 
-Trying to do away with the Try-Catch-Finally structure and Exceptions that consistently make sure your program crashes unexpectedly, Toucan implements an Errors-as-Values system inspired mainly by Rust, which requires explicit error handling. This all happens with the `Result&amp;lt;T, T>` Enum type which combined with the explicitly declared `error` enums allow for an Error Management system where the user is forced to deal with the possible errors.
+Trying to do away with the Try-Catch-Finally structure and Exceptions that consistently make sure your program crashes unexpectedly, Toucan implements an Errors-as-Values system inspired mainly by Rust, which requires explicit error handling. This all happens with the `Result<T, U>` Enum type which combined with the explicitly declared `error` enums allow for an Error Management system where the user is forced to deal with the possible errors.
 
 Errors in Toucan are not Exceptions like in languages like Java but instead a type of enums, which are declared with their own special keyword as to provide more efficient memory management and compiler error support.
 
@@ -1333,7 +1335,7 @@ error ArithmeticError
 }
 ----
 
-To incorporate errors into a function, you have to make it return a `Result&amp;lt;T, T>` type.
+To incorporate errors into a function, you have to make it return a `Result<T, U>` type.
 
 ----
 Result<double, ArithmeticError> safeDivide(double a, double b)
@@ -1924,6 +1926,127 @@ static <T extends primitive> Result<T, TypeMismatchError> parse <>(&string buff)
     }
 }
 ----
+
+== Typedef
+
+Toucan's `typedef` keyword is a way to create simple type aliases. It is especially useful to make types more descriptive or shorter.
+
+----
+typedef PairList = ArrayList<touple<String, int>>;
+
+void main()
+{
+    PairList = new ArrayList<>();
+}
+----
+
+The `typedef` keyword also supports generic parameters, meaning that it's a descriptive way to create new types without having to deal with new classes.
+
+----
+typedef PairList<T, U> = ArrayList<touple<T, U>>;
+
+void main()
+{
+    PairList<String, int> = new ArrayList<>();
+}
+----
+
+It is possible to define multiple new types in a class, and gian access to them when importing the class. The types themselves are also affected by access modifiers.
+
+----
+public static class PairTypes
+{
+    public typedef PairList<T, U> = ArrayList<touple<T, U>>;
+    public typedef TriadList<T, U, V> = ArrayList<touple<T, U, V>>;
+    public typedef QuartetList<T, U, V, D> = ArrayList<touple<T, U, V, D>>;
+    public typedef QuintetList<T, U, V, D, K> = ArrayList<touple<T, U, V, D, K>>;
+}
+----
+
+----
+import PairTypes
+
+void main()
+{
+    PairList<String, int> = new ArrayList<>();
+    TriadList<String, int, double> = new ArrayList<>();
+    QuartetList<String, int, double> = new ArrayList<>();
+}
+----
+
+== Operator Overloading
+
+Operator overloading is an ever-present source of frustration for programmers that are using badly developed APIs. However, if used right, it can make user-defined types much simpler to use. To solve this, Toucan takes a step back from C++'s method of putting operators inside classes, and makes operation overloading entirely separate from it.
+
+----
+struct uint128
+{
+    uint64 high;
+    uint64 low;
+}
+
+operator Operators_uint128
+{
+    uint128 +(&uint128 a, &uint128 b)
+    {
+        uint128 result;
+        result.low = a.low + b.low;
+        result.high = a.high + b.high;
+        // Handle carry from low part
+        if (result.low < a.low) {
+            result.high += 1;
+        }
+        return result;
+    }
+
+    uint128 -(&uint128 a, &uint128 b)
+    {
+        uint128 result;
+        result.low = a.low - b.low;
+        result.high = a.high - b.high;
+        // Handle borrow from low part
+        if (result.low < b.low) {
+            result.high += 1;
+        }
+        return result;
+    }
+}
+----
+
+In the above example we've defined a custom uint128 type, and given it the ability to subtract and add by operator overloading.
+
+This allows for the following operators to be overloaded:
+
+- +
+- -
+- *
+- /
+- %
+- ++
+- \--
+
+== Casting
+
+Casting in Toucan is quite different from most other languages, as instead of having a casting operator, types must have their own `.cast()` functions, which is provided by the Castable<T> trait. Here is a simple example.
+
+----
+struct uint128
+{
+    uint64 high;
+    uint64 low;
+}
+
+implement Castable<uint128>(int64)
+{
+    uint128 cast()
+    {
+        return {0, this};
+    }
+}
+
+----
+
+
 
 = The Toucan Compiler
 

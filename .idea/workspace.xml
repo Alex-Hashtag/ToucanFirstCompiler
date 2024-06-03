@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="85a4d82d-f8ab-4477-a0d4-937182e837ba" name="Changes" comment="Tokens save their location now">
-      <change afterPath="$PROJECT_DIR$/Toucan_Guide.adoc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_31_1_2024___0_48__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_31_1_2024_г__0_48_[Changes]/shelved.patch" beforeDir="false" />
+    <list default="true" id="85a4d82d-f8ab-4477-a0d4-937182e837ba" name="Changes" comment="The asciidoc Guide to the language is now packaged with the compiler&#10;&#10;Now Token Types Added:&#10;START,&#10;END,&#10;final,&#10;const,&#10;syscall,&#10;type_cast,&#10;do,&#10;typeof.&#10;sizeof,&#10;rune,&#10;boolean,&#10;and,&#10;or,&#10;xor,&#10;left_shift,&#10;right_shift,&#10;unsigned_right_shift,&#10;logical_and,&#10;logical_or,&#10;logical_equals,&#10;rune_literal&#10;&#10;Removed Token Types:&#10;array,&#10;compacted&#10;&#10;Updated the Grammar file">
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.toucan" beforeDir="false" afterPath="$PROJECT_DIR$/main.toucan" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/parser/Grammar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/parser/Grammar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenStream.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenStream.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/alex_hashtag/tokens/TokenType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Toucan_Guide.adoc" beforeDir="false" afterPath="$PROJECT_DIR$/Toucan_Guide.adoc" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,9 +26,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;Alex-Hashtag&quot;
+  }
+}</component>
   <component name="GitToolBoxStore">
     <option name="projectConfigVersion" value="5" />
   </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Alex-Hashtag/ToucanFirstCompiler.git&quot;,
+    &quot;accountId&quot;: &quot;62461a24-70b1-4659-99c5-9e6f2220e94b&quot;
+  }
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Toucan_Guide.adoc" root0="FORCE_HIGHLIGHTING" />
   </component>
@@ -49,18 +56,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last.edited.regexp": "toucan.toucan",
-    "last_opened_file_path": "E:/JavaProject/ToucanFirstCompiler",
-    "settings.editor.selected.configurable": "preferences.editor"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last.edited.regexp&quot;: &quot;toucan.toucan&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/JavaProject/ToucanFirstCompiler&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="E:\JavaProject\ToucanFirstCompiler" />
@@ -69,7 +76,9 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-9be69aac17ab-8ba3814f" />
         <option value="jdk-21.0.1-openjdk-21.0.1-9be69aac17ab-b796b7db" />
+        <option value="jdk-21.0.2-graalvm-jdk-21.0.2-173e7b5a5732-c4da5e3d" />
         <option value="jdk-21.0.2-openjdk-21.0.2-af6f2daf387d-7e3f2a05" />
       </set>
     </attachedChunks>
@@ -139,14 +148,23 @@
       <option name="project" value="LOCAL" />
       <updated>1706909050267</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="The asciidoc Guide to the language is now packaged with the compiler&#10;&#10;Now Token Types Added:&#10;START,&#10;END,&#10;final,&#10;const,&#10;syscall,&#10;type_cast,&#10;do,&#10;typeof.&#10;sizeof,&#10;rune,&#10;boolean,&#10;and,&#10;or,&#10;xor,&#10;left_shift,&#10;right_shift,&#10;unsigned_right_shift,&#10;logical_and,&#10;logical_or,&#10;logical_equals,&#10;rune_literal&#10;&#10;Removed Token Types:&#10;array,&#10;compacted&#10;&#10;Updated the Grammar file">
+      <option name="closed" value="true" />
+      <created>1710177864995</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1710177864995</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Setup" />
     <MESSAGE value="Tokenizer is technically working" />
     <MESSAGE value="Tokens save their location now" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tokens save their location now" />
+    <MESSAGE value="The asciidoc Guide to the language is now packaged with the compiler&#10;&#10;Now Token Types Added:&#10;START,&#10;END,&#10;final,&#10;const,&#10;syscall,&#10;type_cast,&#10;do,&#10;typeof.&#10;sizeof,&#10;rune,&#10;boolean,&#10;and,&#10;or,&#10;xor,&#10;left_shift,&#10;right_shift,&#10;unsigned_right_shift,&#10;logical_and,&#10;logical_or,&#10;logical_equals,&#10;rune_literal&#10;&#10;Removed Token Types:&#10;array,&#10;compacted&#10;&#10;Updated the Grammar file" />
+    <option name="LAST_COMMIT_MESSAGE" value="The asciidoc Guide to the language is now packaged with the compiler&#10;&#10;Now Token Types Added:&#10;START,&#10;END,&#10;final,&#10;const,&#10;syscall,&#10;type_cast,&#10;do,&#10;typeof.&#10;sizeof,&#10;rune,&#10;boolean,&#10;and,&#10;or,&#10;xor,&#10;left_shift,&#10;right_shift,&#10;unsigned_right_shift,&#10;logical_and,&#10;logical_or,&#10;logical_equals,&#10;rune_literal&#10;&#10;Removed Token Types:&#10;array,&#10;compacted&#10;&#10;Updated the Grammar file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
