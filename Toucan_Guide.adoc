@@ -758,35 +758,32 @@ Using the `static` keyword on a class makes every field or method in it static. 
 
 Using the `final` keyword on a class means a class cannot be extended from.
 
-_Operator overloading:_
+Using the `final` keyword on a class method means the method cannot be overwritten.
 
-Toucan classes support a feature known as operator overloading, which allows for classes to use arithmetic operators similarly to functions.
+=== _Implicit Constructors:_
+
+Classes in Toucan also support a set of implicit contructors. Let's take for example a simple UTF-64 String class.
 
 ----
-class ComplexNumber
+class UTF64String
 {
-	private double real;
-	private double imaginary;
+    private rune[] characters;
 
-	public ComplexNumber (double real, double imaginary)
-	{
-		this.real = real;
-		this.imaginary = imaginary;
-	}
-
-	public operator+ (final ComplexNumber number)
-	{
-		return new ComplexNumber(this.real + number.real, this.imaginary + number.imaginary);
-	}
+    implicit UTF64String(string)
+    {
+        this.rune[] = string.cast<rune[]>();
+    }
 }
 
 void main()
 {
-	ComplexNumber num1 = new ComplexNumber(5, 4);
-	ComplexNumber num2 = new ComplexNumber(2, 3);
-	num1 = num1 + num2; 
+    UTF64String str = "This is a string";
 }
 ----
+
+
+
+
 
 == Inheritance
 
@@ -1082,9 +1079,9 @@ public enum Message implements Runnable
 
 == Compacted Objects
 
-Compacted Objects in Toucan are basically objects whose size is known at compile time. This means that when they are initialized as fields in a class, that the field holds the actual object instead of a reference to that object, and also that none of the methods are stored together with the object but instead separately, the same way they are stored when you implement a structure. Also, any object that extends a compacted object must also be compacted.
+Compacted Objects in Toucan are its solution to stack-allocated objects, giving control to the creator of the type as to weather or not it will be allocated on the Stack or on the Heap.
 
-We can see an example of the use of the compacted keyword here: 
+We can see an example of the use of the `compacted` keyword here:
 
 ----
 public compacted class Person
@@ -1109,54 +1106,19 @@ public compacted class Person
 }
 ----
 
-This code basically expands to the following, however with the addition of a constructor, the ability to use the `new` keyword, public and private fields and the ability to use it inside other files.
+When an object is declared as compacted, it is allocated on the Stack and not to the Heap, meaning modifiers like `temporary` and `managed` (more of those later) cannot be applied to them. It also means the `.free` method is not generated for such objects.
 
 ----
-struct Person
+void main()
 {
-	string[64] name;
-	int age;
-	float height;
-}
-
-implement Person
-{
-	void printDetails(this)
-	{
-		println!("Name: " + this.name);
-		println!("Age: " + this.age);
-		println!("Height: " + this.height);
-	}
+    Person person = Person("Kyle", 17, 1.8);
+    person.printDetails();
 }
 ----
 
-----
-The above syntax can also be used for records and enums. Also, this means that implement blocks can also be used for compacted objects.
-----
 
-----
-public compacted enum Message
-{
- 	QUIT,
- 	MOVE(int x, int y),
- 	WRITE(string[64]),
- 	CHANGE_COLOR(int r, int g, int b);
-}
+This also means that when a compacted object is used as a member of a class, it becomes allocated inside the class. Also, even though compacted objects aren't reference types, they are always passed by reference.
 
-implement Runnable(Message)
-{
-	public void run()
-	{
-		switch (this)
-		{
-			case QUIT -> println!("The Quit variant has no data to print.");
-			case MOVE(x, y) -> println!("Move in the x direction "+ x + " and in the y direction " + y);
-			case WRITE(text) -> println!("Text message: " + text);
-			case CHANGE_COLOR(r, g, b) -> println!("Change the color to red "+ r +", green " + g + ", and blue " + b);
-		}
-    }
-}
-----
 
 == Generics
 
@@ -1973,6 +1935,33 @@ void main()
     QuartetList<String, int, double> = new ArrayList<>();
 }
 ----
+
+The use of `typedef` also lets one make methods for the type alias only.
+----
+typedef PairList<T, U> = ArrayList<touple<T, U>>
+{
+    public void print()
+    {
+        for (touple<T, U> t : this)
+            println!(t);
+    }
+};
+----
+
+Another way to use `typedef` is to make more restricted versions of different types. This can occur by declaring its member as private, meaning that its methods cannot be called for the new type alias, and also that the only way of getting a variable of that type is to make a factory method for it.
+
+----
+typedef NonZeroI64 = private int64
+{
+    public static Result<NonZeroI64, NonZeroError> makeNonZero(int64 integer)
+    {
+        if (integer == 0) return FAILURE(NonZeroError);
+        NonZeroI64 nonZeroI64 = integer;
+        return SUCCESS(nonZeroError);
+    }
+}
+----
+
 
 == Operator Overloading
 

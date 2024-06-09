@@ -93,7 +93,6 @@ public enum TokenType
     RECORD("record"),
     TRAIT("trait"),
 
-    @Deprecated
     COMPACTED("compacted"),
     PUBLIC("public"),
     PRIVATE("private"),
