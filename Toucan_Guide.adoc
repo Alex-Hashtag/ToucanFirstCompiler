@@ -142,7 +142,7 @@ _Toucan contains the following bitwise operators:_
 
 _Toucan contains the following shorthands for bitwise operators:_
 
-`&amp;=` (bitwise and), `|=`(bitwise or), `^=` (bitwise exclusive or), `<\<=` (bitwise left shift), `>>=` (bitwise right shift), `>>>=` (unsigned bitwise right shift)
+`&` (bitwise and), `|=`(bitwise or), `^=` (bitwise exclusive or), `<\<=` (bitwise left shift), `>>=` (bitwise right shift), `>>>=` (unsigned bitwise right shift)
 
 `~~` (bitwise complement with self)
 
@@ -358,7 +358,7 @@ void main()
 }
 ----
 
-Structs have a variety of capabilities in Toucan that aren’t incredibly common. First, which structs are value types, instances of them are still stored on the heap, as to prevent stack overflows. However, as they are value types, and are represented as a sequence of bits/bytes, bitwise operators work on these user-defined data types. One of the main reasons why they are efficient is that they don’t use pointers by default, outside of the reference to them on the stack. If they are used in an array, a tuple, or even in another struct, the elements are stored one next to the other.
+Structs, unlike classes by default, are stores on the stack, meaning that to pass them by reference you need to do it explicitly. Another important feature of them is that bitwise operators can be used on them.
 
 = Control Flow
 
@@ -388,7 +388,7 @@ void main()
 
 == Loops
 
-Loops are an important part of every programming language, including Toucan, as they allow for repeatability of code. The language has the most common loops, while, do-while, for, and for each (For iterating in a list).
+Loops are an important part of every programming language, including Toucan, as they allow for repeatability of code. The language has the most common loops, while, do-while, for, and for each (For iterating in a list). It also includes a simple condition-less loop, that needs a break statement.
 
 ----
 void main()
@@ -418,6 +418,13 @@ void main()
 	{
 		println!("Hello" + num);
 	}
+
+    loop
+    {
+        println!("Hello World");
+        i++;
+        if (i >= 10)) break;
+    }
 }
 ----
 
@@ -482,11 +489,11 @@ A return type at the beginning, which can be any primitive type (`int`, `byte`, 
 
 Arguments, which are in the brackets, and are used as variables in the function.
 
-_A function can also be made without a return type with the <code>void</code> keyword.</em>
+_A function can also be made without a return type with the `void` keyword
 
 _When a function accepts a primitive type, it accepts a copy of the values in it. However, if it accepts a reference type like an Object (more on them later), it accepts a copy of the reference to that object._
 
-_When passing an object to a function, the <code>final</code> keyword can be used in the argument so that the function is not allowed to mutate the object. </em>
+_When passing an object to a function, the `final` keyword can be used in the argument so that the function is not allowed to mutate the object.
 
 == Function Overloading
 
@@ -1158,6 +1165,33 @@ class IntOperations implements Math<int>
 }
 ----
 
+When using generics with traits, you can define generic functions inside those traits, and overload them depending on the generic argument inside them. Let's take for example the Castable<T> trait (more on casting later).
+
+----
+public trait Castable<T>
+{
+    T cast<T>();
+}
+
+implement Castable<int64>(int32)
+{
+    public int64 cast<int64>()
+    {
+        // Create a variable to hold the result
+        int64 result = 0;
+
+        // Handle the lower 32 bits directly
+        result |= (this & 0xFFFFFFFF);
+
+        // Check if the input is negative and sign extend
+        if (this & 0x80000000)
+            result |= 0xFFFFFFFF00000000;
+
+        return result;
+    }
+}
+----
+
 == Memory Management
 
 We have reached the most important point of the guide, Toucan’s revolutionary memory management system, which involves a combination of reference counting, and escape patches for performance critical code.
@@ -1339,7 +1373,7 @@ void main
 
 == Dynamic Typing
 
-Dynamic typing is usually a really bad idea in programming languages, as it is usually a very performance-incentive mechanism. However, using it as a union type can actually bring some very useful functionality out of the language. Introducing the `var&amp;lt;T, T …>` keyword.
+Dynamic typing is usually a terrible idea in programming languages, as it is usually a very performance-incentive mechanism. However, using it as a union type can actually bring some very useful functionality out of the language. Introducing the `var<T, U …>` keyword.
 
 ----
 void main()
@@ -1720,7 +1754,7 @@ switch (a)
 
 For explicit interactions with the operating system, Toucan provides a `syscall` keyword used for calling functions provided in the language that specifically interact with the operating system. The use of these calls is discouraged for anyone not writing libraries as they are very low level and could introduce bugs.
 
-Let’s for example take the `read&amp;lt;T>()` function which implements the `read` system call.
+Let’s for example take the `read<T>()` function which implements the `read` system call.
 
 ----
 <T extends primitive> T read <>()
@@ -1762,7 +1796,7 @@ public static class Constants
 }  
 ----
 
-Besides const variables exist const functions, which are basically pure functions. Such functions are executed at compile time and inlined whenever possible. The only functions that can be used in const functions are other const functions. This is because there are many things not allowed in const functions: \
+Besides const variables exist const functions, which are basically pure functions. Such functions are executed at compile time and inlined whenever possible. The only functions that can be used in const functions are other const functions. This is because there are many things not allowed in const functions:
 
 * Direct mutability of function arguments
 * Loops with an unknown number of iterations
@@ -2016,7 +2050,7 @@ This allows for the following operators to be overloaded:
 
 == Casting
 
-Casting in Toucan is quite different from most other languages, as instead of having a casting operator, types must have their own `.cast()` functions, which is provided by the Castable<T> trait. Here is a simple example.
+Casting in Toucan is quite different from most other languages, as instead of having a casting operator, types must have their own `.cast<>()` functions, which is provided by the Castable<T> trait. Here is a simple example.
 
 ----
 struct uint128
@@ -2027,7 +2061,7 @@ struct uint128
 
 implement Castable<uint128>(int64)
 {
-    uint128 cast()
+    uint128 cast<uint128>()
     {
         return {0, this};
     }
